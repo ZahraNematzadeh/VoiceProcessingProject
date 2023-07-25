@@ -1,10 +1,10 @@
 import pickle
 
 
-with open('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs/augmented_train.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/augmented_train.pkl', "rb") as file:
     augmented_train = pickle.load(file)
     
-with open('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs/augmented_test.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/augmented_test.pkl', "rb") as file:
     augmented_test = pickle.load(file)
     
 

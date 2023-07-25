@@ -7,10 +7,10 @@ import librosa.display
 
 sample_rate = 44100
 
-with open('C:/Users/zahra/VoiceColab/outputs/CodeFiles/HelpersOutputs/melspect_train_data.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/melspect_train_data.pkl', "rb") as file:
     melspect_train_data = pickle.load(file)
     
-with open('C:/Users/zahra/VoiceColab/outputs/CodeFiles/HelpersOutputs/melspect_train_data.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/melspect_train_data.pkl', "rb") as file:
     melspect_test_data = pickle.load(file)
 
 def visualizing_melspect(melspect_data):

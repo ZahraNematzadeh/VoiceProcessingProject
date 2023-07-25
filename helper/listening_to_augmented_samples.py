@@ -7,16 +7,16 @@ import numpy as np
 import simpleaudio as sa
 from IPython.display import Audio, display
 
-with open('outputs/CodeFiles/HelpersOutputs/augmented_train.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/augmented_train.pkl', "rb") as file:
     augmented_train = pickle.load(file)
     
-with open('outputs/CodeFiles/HelpersOutputs/augmented_test.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/augmented_test.pkl', "rb") as file:
     augmented_test = pickle.load(file)
 
-with open('outputs/CodeFiles/HelpersOutputs/balanced_train_data.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/balanced_train_data.pkl', "rb") as file:
     balanced_train_data = pickle.load(file)
     
-with open('outputs/CodeFiles/HelpersOutputs/balanced_test_data.pkl', "rb") as file:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/balanced_test_data.pkl', "rb") as file:
     balanced_test_data = pickle.load(file)
 
 environment = input("If you are running the code in Colab, enter 'c'. If you are running the code in Spyder, enter 's': ")
