@@ -20,9 +20,6 @@ import os
 import pickle
 import numpy as np
 from keras import callbacks
-
-import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
