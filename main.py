@@ -21,6 +21,9 @@ import pickle
 import numpy as np
 from keras import callbacks
 
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 
 #%%
@@ -50,6 +53,7 @@ with open(output_file_path_test, "wb") as file:
 #%%
 augmented_train = voice_augmentation(balanced_train_data)
 augmented_test = voice_augmentation(balanced_test_data)
+print('================ Audios have been augmented successfully ===============')
 
 output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "augmented_train.pkl")
 with open(output_file_path_train, "wb") as file:
@@ -72,6 +76,7 @@ print('Total Number of samples in test:', total_count)
 #%%
 melspect_train_data = audio_to_melspect(augmented_train)
 melspect_test_data = audio_to_melspect(augmented_test)
+print('============== Audios have been converted to melspectrogram successfully ===============')
 
 output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "melspect_train_data.pkl")
 with open(output_file_path_train, "wb") as file:
