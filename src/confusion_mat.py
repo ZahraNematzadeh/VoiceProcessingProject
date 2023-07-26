@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import (confusion_matrix, ConfusionMatrixDisplay,
@@ -17,7 +18,7 @@ def confusion_mat(true_labels, predicted_labels, dataset_name, dataset_folder_pl
     plt.title('Confusion Matrix')
     plt.xticks(np.arange(len(confusion_mat)), np.arange(len(confusion_mat)))
     plt.yticks(np.arange(len(confusion_mat)), np.arange(len(confusion_mat)))
-    plt.savefig(os.path.join(dataset_folder, 'confusion_matrix_plot.png'))
+    plt.savefig(os.path.join(dataset_folder_plots, 'confusion_matrix_plot.png'))
     plt.close()
     
     accuracy = accuracy_score(true_labels, predicted_labels)
