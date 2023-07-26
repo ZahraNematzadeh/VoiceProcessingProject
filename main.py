@@ -172,7 +172,7 @@ classification_reports(true_labels, predicted_labels, dataset_folder_plots)
 print("================ Classification reports has been saved successfully ==============")
 roc_curve_function(true_labels, predicted_labels, dataset_folder_plots)
 print("================ ROC curve has been plotted successfully =========================")
-print ("=============================== FINISH ==========================================")
+print ("=============================== FINISH ===========================================")
 #-------------------------------------------------------------------------------
 '''
 true_labels_original = np.load('true_labels_original_5_e_cnn.npy')
