@@ -34,4 +34,4 @@ def plot_avg_fold(model_history, dataset_folder_plots):
     plt.close()
     #plt.show()
     print('Average Loss and Accuracy have been plotted successfully. Please check the directory.')
-    print('=====================================================================================')
+    print('===========================================================================================')

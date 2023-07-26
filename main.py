@@ -58,7 +58,7 @@ with open(output_file_path_test, "wb") as file:
 
 augmented_train = voice_augmentation(balanced_train_data)
 augmented_test = voice_augmentation(balanced_test_data)
-print('============= Audios have been augmented successfully ===============')
+print('==================== Audios have been augmented successfully =====================')
 
 output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")
 with open(output_file_path_train, "wb") as file:
@@ -83,7 +83,7 @@ print('Total Number of samples in test:', test_count)
 
 melspect_train_data = audio_to_melspect(augmented_train)
 melspect_test_data = audio_to_melspect(augmented_test)
-print('======== Audios have been converted to melspectrogram successfully ======')
+print('============= Audios have been converted to melspectrogram successfully ==========')
 
 output_file_path_train = os.path.join(dataset_folder_helper, "melspect_train_data.pkl")
 with open(output_file_path_train, "wb") as file:
@@ -167,9 +167,12 @@ np.save(dataset_folder_final+'/true_labels_bigmass_e_cnn_big_testaug.npy', np.ar
 
 #-------------------------------------------------------------------------------
 confusion_mat(true_labels, predicted_labels, dataset_folder_plots)
-classification_reports(true_labels, predicted_labels)
+print("================ Confusion matrix has been plotted successfully ==================")
+classification_reports(true_labels, predicted_labels, dataset_folder_plots)
+print("================ Classification reports has been saved successfully ==============")
 roc_curve_function(true_labels, predicted_labels, dataset_folder_plots)
-
+print("================ ROC curve has been plotted successfully =========================")
+print ("=============================== FINISH ==========================================")
 #-------------------------------------------------------------------------------
 '''
 true_labels_original = np.load('true_labels_original_5_e_cnn.npy')

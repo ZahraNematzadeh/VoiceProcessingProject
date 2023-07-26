@@ -13,11 +13,13 @@ def confusion_mat(true_labels, predicted_labels, dataset_folder_plots):
     confusion_mat = confusion_matrix(true_labels, predicted_labels)
     num_classes = len(confusion_mat)
     plt.figure(figsize=(8, 6))
-    ax = plt.imshow(confusion_mat, interpolation='nearest', cmap='Blues')
+    ax = plt.imshow(confusion_mat, interpolation='nearest', cmap='Blues', 
+                    aspect='auto')
 
     for i in range(num_classes):
         for j in range(num_classes):
-            plt.text(j, i, confusion_mat[i, j], ha='center', va='center', color='black', fontsize=12)
+            plt.text(j, i, confusion_mat[i, j], ha='center', va='center',
+                     color='black', fontsize=12)
 
     mappable = None
     for child in ax.get_children():
@@ -27,8 +29,8 @@ def confusion_mat(true_labels, predicted_labels, dataset_folder_plots):
 
     if mappable is not None:
         #plt.colorbar(mappable)
-        colorbar = plt.colorbar(mappable)
-        colorbar.ax.tick_params(labelsize=10, pad=0.15)
+        colorbar = plt.colorbar(mappable, pad=0.03)
+        colorbar.ax.tick_params(labelsize=10)
         
     plt.xlabel('Predicted Labels')
     plt.ylabel('True Labels')
