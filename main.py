@@ -161,9 +161,9 @@ np.save('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/tru
 
 
 #%%
-confusion_mat(true_labels, predicted_labels)
+confusion_mat(true_labels, predicted_labels, dataset_name)
 classification_reports(true_labels, predicted_labels)
-roc_curve_function(true_labels, predicted_labels)
+roc_curve_function(true_labels, predicted_labels, dataset_name)
 
 #%%
 '''
