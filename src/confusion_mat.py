@@ -11,8 +11,8 @@ def confusion_mat(true_labels, predicted_labels, dataset_name, dataset_folder_pl
 
     confusion_mat = confusion_matrix(true_labels, predicted_labels)
     plt.figure(figsize=(4.4, 3.2))
-    plt.imshow(confusion_mat, interpolation='nearest', cmap='Blues')
-    plt.colorbar()
+    ax = plt.imshow(confusion_mat, interpolation='nearest', cmap='Blues')
+    plt.colorbar(ax)
     plt.xlabel('Predicted Labels')
     plt.ylabel('True Labels')
     plt.title('Confusion Matrix')
