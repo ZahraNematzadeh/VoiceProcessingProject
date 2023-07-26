@@ -59,7 +59,7 @@ for filename in signal_files:
         spectrogram = audio_to_melspectrogram(audio_path)
         feature_vectors.append(spectrogram)  
 #%%
-LOG_DIR = 'C:/Users/zahra/VoiceColab/outputs/EmbeddingLogs/logsMass'
+LOG_DIR = '/content/drive/My Drive/VoiceProcessingProject_Outputs/EmbeddingLogs/logsMass'
 if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
 

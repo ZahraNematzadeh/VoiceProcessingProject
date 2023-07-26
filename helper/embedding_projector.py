@@ -31,7 +31,7 @@ def audio_to_melspectrogram(audio_path, target_shape=(128, 218)):
     scaled_mel = scale_minmax(log_spectrogram)
     return scaled_mel
 
-LOG_DIR = 'C:/Users/zahra/VoiceColab/outputs/EmbeddingLogs/logs'
+LOG_DIR = '/content/drive/My Drive/VoiceProcessingProject_Outputs/EmbeddingLogs/logs'
 if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
 

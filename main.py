@@ -20,12 +20,12 @@ import os
 import pickle
 import numpy as np
 from keras import callbacks
-
+import matplotlib.pyplot as plt
 
 
 #%%
-folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass/train'
-folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass/val'
+folder_path_train= '/content/drive/My Drive/Dataset/ClusteredData/big_mass/train'
+folder_path_test= '/content/drive/My Drive/Dataset/ClusteredData/big_mass/val'
 padded_train = []
 padded_test = []
 
@@ -36,26 +36,27 @@ process_folder(folder_path_test, padded_test)
 balanced_train_data = oversample_positive_class(padded_train, dataset_name="Train")
 balanced_test_data = oversample_positive_class(padded_test,  dataset_name="Test")
 
-if not os.path.exists('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs'):
-        os.makedirs('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs')
+if not os.path.exists('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs'):
+        os.makedirs('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs')
 
-output_file_path_train = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "balanced_train_data.pkl")
+output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "balanced_train_data.pkl")
 with open(output_file_path_train, "wb") as file:
        pickle.dump(balanced_train_data, file)
 
-output_file_path_test = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "balanced_test_data.pkl")       
+output_file_path_test = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "balanced_test_data.pkl")       
 with open(output_file_path_test, "wb") as file:
        pickle.dump(balanced_test_data, file)
 
 #%%
 augmented_train = voice_augmentation(balanced_train_data)
 augmented_test = voice_augmentation(balanced_test_data)
+print('================ Audios have been augmented successfully ===============')
 
-output_file_path_train = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "augmented_train.pkl")
+output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "augmented_train.pkl")
 with open(output_file_path_train, "wb") as file:
        pickle.dump(augmented_train, file)
 
-output_file_path_test = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "augmented_test.pkl")       
+output_file_path_test = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "augmented_test.pkl")       
 with open(output_file_path_test, "wb") as file:
        pickle.dump(augmented_test, file)
 #%%       
@@ -72,12 +73,13 @@ print('Total Number of samples in test:', total_count)
 #%%
 melspect_train_data = audio_to_melspect(augmented_train)
 melspect_test_data = audio_to_melspect(augmented_test)
+print('============== Audios have been converted to melspectrogram successfully ===============')
 
-output_file_path_train = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "melspect_train_data.pkl")
+output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "melspect_train_data.pkl")
 with open(output_file_path_train, "wb") as file:
        pickle.dump(melspect_train_data, file)
 
-output_file_path_test = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "melspect_test_data.pkl")       
+output_file_path_test = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "melspect_test_data.pkl")       
 with open(output_file_path_test, "wb") as file:
        pickle.dump(melspect_test_data, file)
 
@@ -122,7 +124,7 @@ else:
 scheduler = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
                                         patience=5, min_lr=1e-8, verbose=1)
 
-checkpointer = callbacks.ModelCheckpoint(filepath='C:/Users/zahra/VoiceColab/outputs/FinalOutputs/e_cnn_bigMass_augtest.hdf5',
+checkpointer = callbacks.ModelCheckpoint(filepath='/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/e_cnn_bigMass_augtest.hdf5',
                                          verbose=1, save_best_only=True)
 #%% Training
 _,_, test_count = counting_aug_samples(augmented_test)
@@ -131,17 +133,17 @@ data_kfold, model_history = kfold_training(melspect_train_array ,melspect_test_a
                                            test_count, model, scheduler,
                                            checkpointer, k_fold=3, num_epochs=3)
 #%% saving models
-with open('C:/Users/zahra/VoiceColab/outputs/FinalOutputs/modelhistory_cnn_e_big_testaug.pkl', 'wb') as f:                                      # Save model_history
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/modelhistory_cnn_e_big_testaug.pkl', 'wb') as f:                                      # Save model_history
     pickle.dump(model_history, f)
     
-with open('C:/Users/zahra/VoiceColab/outputs/FinalOutputs/data_kfold_cnn_e_big_testaug.pkl', 'wb') as f:
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/data_kfold_cnn_e_big_testaug.pkl', 'wb') as f:
     pickle.dump(data_kfold, f)                                                               # Save data_kfold for prediction
 
 # Loading models
-with open('C:/Users/zahra/VoiceColab/outputs/FinalOutputs/modelhistory_cnn_e_big_testaug.pkl', 'rb') as f:                                      # Load model_history
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/modelhistory_cnn_e_big_testaug.pkl', 'rb') as f:                                      # Load model_history
     loaded_model_history = pickle.load(f)
     
-with open('C:/Users/zahra/VoiceColab/outputs/FinalOutputs/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
+with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
 #%% Plotting learning curves
 plot_each_fold(model_history)
@@ -151,8 +153,8 @@ plot_avg_fold(model_history)
 predicted_labels = label_prediction(data_kfold)
 true_labels = y_test_encoded
 
-np.save('C:/Users/zahra/VoiceColab/outputs/FinalOutputs/predicted_labels_e_cnn_big_testaug.npy', np.array(predicted_labels))
-np.save('C:/Users/zahra/VoiceColab/outputs/FinalOutputs/true_labels_bigmass_e_cnn_big_testaug.npy', np.array(true_labels))
+np.save('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/predicted_labels_e_cnn_big_testaug.npy', np.array(predicted_labels))
+np.save('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/true_labels_bigmass_e_cnn_big_testaug.npy', np.array(true_labels))
 
 
 #%%
@@ -161,7 +163,7 @@ classification_reports(true_labels, predicted_labels)
 roc_curve_function(true_labels, predicted_labels)
 
 #%%
-
+'''
 true_labels_original = np.load('true_labels_original_5_e_cnn.npy')
 predicted_labels_original = np.load('predicted_labels_original_5_e_cnn.npy')
     
@@ -178,3 +180,4 @@ all_roc_curves(true_labels_original,predicted_labels_original,
                true_labels_bigmass,predicted_labels_bigmass,
                true_labels_smallmass,predicted_labels_smallmass,
                true_labels_mediummass,predicted_labels_mediummass)
+'''
