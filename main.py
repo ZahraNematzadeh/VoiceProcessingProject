@@ -12,6 +12,7 @@ from src.classification_report import classification_reports
 from src.roc_curve_function import roc_curve_function
 from src.all_roc_curves import all_roc_curves
 from src.melspect_array import melspect_array
+from src.get_dataset_name import get_dataset_name
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
@@ -24,10 +25,12 @@ import matplotlib.pyplot as plt
 
 
 #%%
-folder_path_train= '/content/drive/My Drive/Dataset/ClusteredData/big_mass/train'
-folder_path_test= '/content/drive/My Drive/Dataset/ClusteredData/big_mass/val'
+folder_path_train= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/train'
+folder_path_test= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/val'
 padded_train = []
 padded_test = []
+
+dataset_name = get_dataset_name(folder_path_train)
 
 process_folder(folder_path_train, padded_train)
 process_folder(folder_path_test, padded_test)
@@ -146,8 +149,8 @@ with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/m
 with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
 #%% Plotting learning curves
-plot_each_fold(model_history)
-plot_avg_fold(model_history)
+plot_each_fold(model_history, dataset_name)
+plot_avg_fold(model_history, dataset_name)
 
 #%%
 predicted_labels = label_prediction(data_kfold)
@@ -158,9 +161,9 @@ np.save('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/tru
 
 
 #%%
-confusion_mat(true_labels, predicted_labels)
+confusion_mat(true_labels, predicted_labels, dataset_name)
 classification_reports(true_labels, predicted_labels)
-roc_curve_function(true_labels, predicted_labels)
+roc_curve_function(true_labels, predicted_labels, dataset_name)
 
 #%%
 '''
