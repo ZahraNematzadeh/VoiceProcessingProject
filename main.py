@@ -155,8 +155,8 @@ with open(dataset_folder_final + '/modelhistory_cnn_e_big_testaug.pkl', 'rb') as
 with open(dataset_folder_final + '/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
 #---------------------------- Plotting learning curves -------------------------
-plot_each_fold(model_history, dataset_name, dataset_folder_plots)
-plot_avg_fold(model_history, dataset_name, dataset_folder_plots)
+plot_each_fold(model_history, dataset_folder_plots)
+plot_avg_fold(model_history, dataset_folder_plots)
 
 #-------------------------------------------------------------------------------
 predicted_labels = label_prediction(data_kfold)
@@ -166,9 +166,9 @@ np.save(dataset_folder_final+'/predicted_labels_e_cnn_big_testaug.npy', np.array
 np.save(dataset_folder_final+'/true_labels_bigmass_e_cnn_big_testaug.npy', np.array(true_labels))
 
 #-------------------------------------------------------------------------------
-confusion_mat(true_labels, predicted_labels, dataset_name, dataset_folder_plots)
+confusion_mat(true_labels, predicted_labels, dataset_folder_plots)
 classification_reports(true_labels, predicted_labels)
-roc_curve_function(true_labels, predicted_labels, dataset_name)
+roc_curve_function(true_labels, predicted_labels, dataset_folder_plots)
 
 #-------------------------------------------------------------------------------
 '''

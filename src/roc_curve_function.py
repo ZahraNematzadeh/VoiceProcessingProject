@@ -1,8 +1,9 @@
 from sklearn.metrics import (roc_curve, roc_auc_score)
 import matplotlib.pyplot as plt
+import os
 
 
-def roc_curve_function(true_labels, predicted_labels):
+def roc_curve_function(true_labels, predicted_labels, dataset_folder_plots):
     
     fpr, tpr, thresholds = roc_curve(true_labels, predicted_labels)                 # Calculate the false positive rate, true positive rate, and thresholds
     auc = roc_auc_score(true_labels, predicted_labels)                              # Calculate the AUC (Area Under the Curve)
@@ -13,4 +14,5 @@ def roc_curve_function(true_labels, predicted_labels):
     plt.ylabel('True Positive Rate')
     plt.title('ROC Curve (AUC = {:.2f})'.format(auc))
     plt.legend(loc='lower right')
-    plt.show()
+    plt.savefig(os.path.join(dataset_folder_plots, f'ROC Curve.png'))
+    plt.close()

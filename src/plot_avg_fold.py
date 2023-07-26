@@ -2,7 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_avg_fold(model_history, dataset_name, dataset_folder_plots):
+def plot_avg_fold(model_history, dataset_folder_plots):
     
     avg_accuracy = np.mean([history.history['categorical_accuracy'] for history in model_history], axis=0)
     avg_accuracy_val = np.mean([history.history['val_categorical_accuracy'] for history in model_history], axis=0)
@@ -34,4 +34,4 @@ def plot_avg_fold(model_history, dataset_name, dataset_folder_plots):
     plt.close()
     #plt.show()
     print('Average Loss and Accuracy have been plotted successfully. Please check the directory.')
-    print('=========================================================')
+    print('=====================================================================================')

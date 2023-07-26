@@ -6,6 +6,7 @@ def oversample_positive_class(data, folder_name):
     negative_samples = [sample for sample in data if sample[2] == 'Negative']
 
     num_positive_samples_before = len(positive_samples)
+    print("==================================================================================")
     print("Number of positive samples before balancing(" + folder_name + "):", num_positive_samples_before)
     num_negative_samples = len(negative_samples)
     print("Number of negative samples(" + folder_name + "):", num_negative_samples)
@@ -17,7 +18,7 @@ def oversample_positive_class(data, folder_name):
 
     num_positive_samples_after = len(oversampled_positive_samples)
     print("Number of added positive samples (" + folder_name + "):", num_positive_samples_after)
-    print("=================================================================")
+    print("==================================================================================")
 
     filename_count = {}
     for sample in oversampled_positive_samples:

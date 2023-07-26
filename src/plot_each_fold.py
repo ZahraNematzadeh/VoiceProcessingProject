@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 
-def plot_each_fold(model_history, dataset_name, dataset_folder_plots):
+def plot_each_fold(model_history, dataset_folder_plots):
     
     for fold, history in enumerate(model_history):
     
@@ -29,6 +29,6 @@ def plot_each_fold(model_history, dataset_name, dataset_folder_plots):
         plt.legend()
         plt.savefig(os.path.join(dataset_folder_plots, f'fold_{fold+1}_loss.png'))
         plt.close()
-    print('=========================================================')
+    print('===========================================================================================')
     print('Loss and Accuracy for each fold have been plotted successfully. Please check the directory.')
-    print('=========================================================')
+    print('===========================================================================================')
