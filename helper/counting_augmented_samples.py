@@ -1,8 +1,9 @@
+import os
 import pickle
 
-def counting_aug_samples(augmented_data, dataset_folder_helper):
+def counting_aug_samples(dataset_folder_helper,augmented_data):
 
-    with open(dataset_folder_helper + augmented_data, "rb") as file:
+    with open(os.path.join(dataset_folder_helper, augmented_data),"rb") as file:
         augmented_data = pickle.load(file)
 
     positive_count = 0

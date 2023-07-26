@@ -69,12 +69,12 @@ with open(output_file_path_test, "wb") as file:
 #-------------------------------------------------------------------------------      
 from helper.counting_augmented_samples import counting_aug_samples
 
-positive_count,negative_count,total_count  = counting_aug_samples('augmented_train.pkl',dataset_folder_helper)
+positive_count,negative_count,total_count  = counting_aug_samples(dataset_folder_helper,'augmented_train.pkl')
 print("Number of Positive samples in train:", positive_count)
 print("Number of Negative samples in train:", negative_count)
 print('Total Number of samples in train:', total_count)
 
-positive_count,negative_count,total_count  = counting_aug_samples('augmented_test.pkl', dataset_folder_helper)
+positive_count,negative_count,total_count  = counting_aug_samples(dataset_folder_helper,'augmented_test.pkl')
 print("Number of Positive samples in test:", positive_count)
 print("Number of Negative samples in test:", negative_count)
 print('Total Number of samples in test:', total_count)
