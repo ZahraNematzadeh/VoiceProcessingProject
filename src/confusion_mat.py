@@ -5,19 +5,13 @@ from sklearn.metrics import (confusion_matrix, ConfusionMatrixDisplay,
                              recall_score, f1_score,
                              roc_auc_score)
 
-def confusion_mat(true_labels, predicted_labels, dataset_name):
-
-    if not os.path.exists('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots'):
-        os.makedirs('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots')
-    dataset_folder = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots', dataset_name)
-    if not os.path.exists(dataset_folder):
-        os.makedirs(dataset_folder)
+def confusion_mat(true_labels, predicted_labels, dataset_name, dataset_folder_plots):
 
     confusion_mat = confusion_matrix(true_labels, predicted_labels)
-    disp = ConfusionMatrixDisplay(confusion_mat)
-    disp.plot()
+    plt.figure(figsize=(4.4, 2.8))
+    ConfusionMatrixDisplay(confusion_mat).plot()
     plt.title('Confusion Matrix')
-    plt.savefig(f'/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots/{dataset_name}/confusion_matrix_plot.png')
+    plt.savefig(os.path.join(dataset_folder_plots, f'confusion_matrix_plot.png'))
     plt.close()
     
     accuracy = accuracy_score(true_labels, predicted_labels)

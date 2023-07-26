@@ -35,6 +35,7 @@ folder_path_test= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/val'
 dataset_name = get_dataset_name(folder_path_train)
 dataset_folder_helper = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', dataset_name)
 dataset_folder_final = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs', dataset_name)
+dataset_folder_plots = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots', dataset_name)
 #-------------------------------------------------------------------------------
 
 process_folder(folder_path_train, padded_train)
@@ -154,8 +155,8 @@ with open(dataset_folder_final + '/modelhistory_cnn_e_big_testaug.pkl', 'rb') as
 with open(dataset_folder_final + '/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
 #---------------------------- Plotting learning curves -------------------------
-plot_each_fold(model_history, dataset_name)
-plot_avg_fold(model_history, dataset_name)
+plot_each_fold(model_history, dataset_name, dataset_folder_plots)
+plot_avg_fold(model_history, dataset_name, dataset_folder_plots)
 
 #-------------------------------------------------------------------------------
 predicted_labels = label_prediction(data_kfold)
@@ -164,9 +165,8 @@ true_labels = y_test_encoded
 np.save(dataset_folder_final+'/predicted_labels_e_cnn_big_testaug.npy', np.array(predicted_labels))
 np.save(dataset_folder_final+'/true_labels_bigmass_e_cnn_big_testaug.npy', np.array(true_labels))
 
-
 #-------------------------------------------------------------------------------
-confusion_mat(true_labels, predicted_labels, dataset_name)
+confusion_mat(true_labels, predicted_labels, dataset_name, dataset_folder_plots)
 classification_reports(true_labels, predicted_labels)
 roc_curve_function(true_labels, predicted_labels, dataset_name)
 
