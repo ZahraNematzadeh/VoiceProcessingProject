@@ -74,10 +74,10 @@ print("Number of Positive samples in train:", positive_count)
 print("Number of Negative samples in train:", negative_count)
 print('Total Number of samples in train:', total_count)
 
-positive_count,negative_count,total_count  = counting_aug_samples(dataset_folder_helper,'augmented_test.pkl')
+positive_count,negative_count,test_count  = counting_aug_samples(dataset_folder_helper,'augmented_test.pkl')
 print("Number of Positive samples in test:", positive_count)
 print("Number of Negative samples in test:", negative_count)
-print('Total Number of samples in test:', total_count)
+print('Total Number of samples in test:', test_count)
 #-------------------------------------------------------------------------------
 
 melspect_train_data = audio_to_melspect(augmented_train)
@@ -136,7 +136,6 @@ scheduler = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
 checkpointer = callbacks.ModelCheckpoint(filepath= dataset_folder_final + '/e_cnn_bigMass_augtest.hdf5',
                                          verbose=1, save_best_only=True)
 #---------------------------------  Training -----------------------------------
-_,_, test_count = counting_aug_samples(augmented_test)
 data_kfold, model_history = kfold_training(melspect_train_array ,melspect_test_array,
                                            y_train_one_hot, y_test_one_hot,
                                            test_count, model, scheduler,
