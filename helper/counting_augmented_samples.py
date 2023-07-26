@@ -1,18 +1,13 @@
 import pickle
 
+def counting_aug_samples(augmented_data, dataset_folder_helper):
 
-with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/augmented_train.pkl', "rb") as file:
-    augmented_train = pickle.load(file)
-    
-with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs/augmented_test.pkl', "rb") as file:
-    augmented_test = pickle.load(file)
-    
+    with open(dataset_folder_helper + augmented_data, "rb") as file:
+        augmented_data = pickle.load(file)
 
-def counting_aug_samples(augmented_data):
-    DATA = augmented_data
     positive_count = 0
     negative_count = 0
-    for item in DATA:
+    for item in augmented_data:
         label = item[2]
         if label == "Positive":
             positive_count += 1
@@ -21,7 +16,5 @@ def counting_aug_samples(augmented_data):
     test_count = positive_count + negative_count
     return positive_count, negative_count, test_count
 
-positive_tr_count, negative_tr_count, test_tr_count = counting_aug_samples(augmented_train)
-positive_ts_count, negative_ts_count, test_ts_count = counting_aug_samples(augmented_test)
 
 
