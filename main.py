@@ -102,11 +102,11 @@ elif visualizing_selection.lower() == 'l':
         
         output_file_path_train = os.path.join(dataset_folder_helper, "leaf_train_data.pkl")
         with open(output_file_path_train, "wb") as file:
-               pickle.dump(melspect_train_data, file)
+               pickle.dump(lf_representation_train, file)
 
-        output_file_path_test = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "leaf_test_data.pkl")       
+        output_file_path_test = os.path.join(dataset_folder_helper, "leaf_test_data.pkl")       
         with open(output_file_path_test, "wb") as file:
-               pickle.dump(melspect_test_data, file)
+               pickle.dump(lf_representation_test, file)
 
 #-------------------------------------------------------------------------------
 y_train_one_hot,_ = label_encoder(melspect_train_data)
