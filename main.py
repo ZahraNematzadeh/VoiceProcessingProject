@@ -27,6 +27,9 @@ import matplotlib.pyplot as plt
 
 
 #-------------------------------------------------------------------------------
+KFOLD = 3
+EPOCH = 3
+BATCH = 64
 padded_train = []
 padded_test = []
 folder_path_train= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/train'
@@ -85,6 +88,9 @@ visualizing_selection = input("Enter 'm' to convert audio to Melspectrogram --or
 if visualizing_selection.lower() == 'm':
     melspect_train_data = audio_to_melspect(augmented_train)
     melspect_test_data = audio_to_melspect(augmented_test)
+    train_data = melspect_train_data
+    test_data = melspect_test_data
+    boolean_leaf = False
     print('============= Audios have been converted to Melspectrogram successfully ==========')
 
     output_file_path_train = os.path.join(dataset_folder_helper, "melspect_train_data.pkl")
@@ -98,6 +104,9 @@ if visualizing_selection.lower() == 'm':
 elif visualizing_selection.lower() == 'l':
         lf_representation_train = leaf_representation(folder_path_train)
         lf_representation_test = leaf_representation(folder_path_test)
+        train_data = lf_representation_train
+        test_data = lf_representation_test
+        boolean_leaf = True
         print('============= Audios have been converted to Leaf successfully ==========')
         
         output_file_path_train = os.path.join(dataset_folder_helper, "leaf_train_data.pkl")
@@ -109,24 +118,24 @@ elif visualizing_selection.lower() == 'l':
                pickle.dump(lf_representation_test, file)
 
 #-------------------------------------------------------------------------------
-y_train_one_hot,_ = label_encoder(melspect_train_data)
-y_test_one_hot, y_test_encoded = label_encoder(melspect_test_data)
+y_train_one_hot,_ = label_encoder(train_data)
+y_test_one_hot, y_test_encoded = label_encoder(test_data)
 
 #-------------------------------------------------------------------------------
 color_space = input("Enter 'g' for grayscale or 'r' for RGB: ")
 if color_space.lower() == 'g':
-    melspect_train_array = melspect_array(melspect_train_data)
-    melspect_test_array = melspect_array(melspect_test_data)
-    input_shape = melspect_train_array.shape[1:]     #input_shape = (128,431,1)
+    train_array = melspect_array(train_data, boolean_leaf)
+    test_array = melspect_array(test_data, boolean_leaf)
+    input_shape = train_array.shape[1:]     #input_shape = (128,431,1)
     num_classes = 2
     model = cnn_function(input_shape, 2)
     model.summary()
 elif color_space.lower() == 'r':
-    melspect_train_array = melspect_array(melspect_train_data)
-    melspect_test_array = melspect_array(melspect_test_data)
-    melspect_train_array = np.repeat(melspect_train_array, 3, axis=-1)
-    melspect_test_array = np.repeat(melspect_test_array, 3, axis=-1)
-    input_shape = melspect_train_array.shape[1:]
+    train_array = melspect_array(train_data,boolean_leaf)
+    test_array = melspect_array(test_data,boolean_leaf)
+    train_array = np.repeat(train_array, 3, axis=-1)
+    test_array = np.repeat(test_array, 3, axis=-1)
+    input_shape = train_array.shape[1:]
     transfer_learning = input("Enter 'r' for Resnet50 or 'i' for InceptionV3 or 'x' for Xception: ")
     if transfer_learning.lower() == 'r':
         model = resnet50(input_shape)
@@ -141,7 +150,9 @@ elif color_space.lower() == 'r':
         print("Invalid transfer learning option. Please enter 'r' for Resnet50, 'i' for InceptionV3, or 'x' for Xception.")
 else:
     print("Invalid color space option. Please enter 'g' for grayscale or 'r' for RGB.")
-         
+  
+print(test_array) 
+print(y_test_one_hot)      
 #-------------------------------------------------------------------------------
 #earlystopping = callbacks.EarlyStopping(monitor = "val_loss", mode= "min",
                                         #patience= 10, restore_best_weights= True)
@@ -152,10 +163,12 @@ scheduler = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
 checkpointer = callbacks.ModelCheckpoint(filepath= dataset_folder_final + '/e_cnn_bigMass_augtest.hdf5',
                                          verbose=1, save_best_only=True)
 #---------------------------------  Training -----------------------------------
-data_kfold, model_history = kfold_training(melspect_train_array ,melspect_test_array,
+print('================= Training will start with {KFOLD}-fold cross validation and {EPOCH} epochs ========================')
+data_kfold, model_history = kfold_training(train_array, test_array,
                                            y_train_one_hot, y_test_one_hot,
                                            test_count, model, scheduler,
-                                           checkpointer, k_fold=3, num_epochs=3)
+                                           checkpointer, k_fold = KFOLD,
+                                           Batch_size= BATCH, num_epochs = EPOCH, boolean_leaf)
 # -------------------------------- saving models -------------------------------
 with open(dataset_folder_final+'/modelhistory_cnn_e_big_testaug.pkl', 'wb') as f:                                      # Save model_history
     pickle.dump(model_history, f)

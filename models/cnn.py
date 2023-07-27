@@ -10,22 +10,22 @@ def cnn_function(input_shape, num_classes):
         keras.layers.Conv2D(32,(3,3),  input_shape= input_shape, kernel_regularizer=regularizers.l2(0.0005)),
         BatchNormalization(),
         keras.layers.Activation('relu'),
-        keras.layers.MaxPool2D((2,2)),
+        keras.layers.MaxPool2D((2,2), padding="same"),
 
         keras.layers.Conv2D(64,(3,3), kernel_regularizer=regularizers.l2(0.0005)),
         BatchNormalization(),
         keras.layers.Activation('relu'),
-        keras.layers.MaxPool2D((2,2)),
+        keras.layers.MaxPool2D((2,2), padding="same"),
 
         keras.layers.Conv2D(128,(3,3), kernel_regularizer=regularizers.l2(0.0005)),
         BatchNormalization(),
         keras.layers.Activation('relu'),
-        keras.layers.MaxPool2D((2,2)),
+        keras.layers.MaxPool2D((2,2), padding="same"),
 
         keras.layers.Conv2D(256,(3,3), kernel_regularizer=regularizers.l2(0.0005)),
         BatchNormalization(),
         keras.layers.Activation('relu'),
-        keras.layers.MaxPool2D((2,2)),
+        keras.layers.MaxPool2D((2,2), padding="same"),
 
         keras.layers.Flatten(),
         keras.layers.Dropout(0.3),
