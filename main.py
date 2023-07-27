@@ -14,6 +14,7 @@ from src.all_roc_curves import all_roc_curves
 from src.melspect_array import melspect_array
 from src.get_dataset_name import get_dataset_name
 from src.make_dataset_folder import make_dataset_folder
+from src.leaf_representation import leaf_representation
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
@@ -28,8 +29,8 @@ import matplotlib.pyplot as plt
 #-------------------------------------------------------------------------------
 padded_train = []
 padded_test = []
-folder_path_train= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/train'
-folder_path_test= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/val'
+folder_path_train= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/train'
+folder_path_test= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/val'
 
 
 dataset_name = get_dataset_name(folder_path_train)
@@ -80,18 +81,32 @@ print("Number of Positive samples in test:", positive_count)
 print("Number of Negative samples in test:", negative_count)
 print('Total Number of samples in test:', test_count)
 #-------------------------------------------------------------------------------
+visualizing_selection = input("Enter 'm' to convert audio to Melspectrogram --or-- 'l' to convert them to Leaf: ")
+if visualizing_selection.lower() == 'm':
+    melspect_train_data = audio_to_melspect(augmented_train)
+    melspect_test_data = audio_to_melspect(augmented_test)
+    print('============= Audios have been converted to Melspectrogram successfully ==========')
 
-melspect_train_data = audio_to_melspect(augmented_train)
-melspect_test_data = audio_to_melspect(augmented_test)
-print('============= Audios have been converted to melspectrogram successfully ==========')
+    output_file_path_train = os.path.join(dataset_folder_helper, "melspect_train_data.pkl")
+    with open(output_file_path_train, "wb") as file:
+           pickle.dump(melspect_train_data, file)
 
-output_file_path_train = os.path.join(dataset_folder_helper, "melspect_train_data.pkl")
-with open(output_file_path_train, "wb") as file:
-       pickle.dump(melspect_train_data, file)
+    output_file_path_test = os.path.join(dataset_folder_helper, "melspect_test_data.pkl")       
+    with open(output_file_path_test, "wb") as file:
+           pickle.dump(melspect_test_data, file)
 
-output_file_path_test = os.path.join(dataset_folder_helper, "melspect_test_data.pkl")       
-with open(output_file_path_test, "wb") as file:
-       pickle.dump(melspect_test_data, file)
+elif visualizing_selection.lower() == 'l':
+        lf_representation_train = leaf_representation(folder_path_train)
+        lf_representation_test = leaf_representation(folder_path_test)
+        print('============= Audios have been converted to Leaf successfully ==========')
+        
+        output_file_path_train = os.path.join(dataset_folder_helper, "leaf_train_data.pkl")
+        with open(output_file_path_train, "wb") as file:
+               pickle.dump(melspect_train_data, file)
+
+        output_file_path_test = os.path.join('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', "leaf_test_data.pkl")       
+        with open(output_file_path_test, "wb") as file:
+               pickle.dump(melspect_test_data, file)
 
 #-------------------------------------------------------------------------------
 y_train_one_hot,_ = label_encoder(melspect_train_data)
