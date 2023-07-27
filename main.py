@@ -13,6 +13,7 @@ from src.roc_curve_function import roc_curve_function
 from src.all_roc_curves import all_roc_curves
 from src.melspect_array import melspect_array
 from src.get_dataset_name import get_dataset_name
+from src.make_dataset_folder import make_dataset_folder
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
@@ -24,73 +25,79 @@ from keras import callbacks
 import matplotlib.pyplot as plt
 
 
-#%%
-folder_path_train= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/train'
-folder_path_test= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/val'
+#-------------------------------------------------------------------------------
 padded_train = []
 padded_test = []
+folder_path_train= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/train'
+folder_path_test= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass/val'
+
 
 dataset_name = get_dataset_name(folder_path_train)
+dataset_folder_helper = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', dataset_name)
+dataset_folder_final = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs', dataset_name)
+dataset_folder_plots = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots', dataset_name)
+#-------------------------------------------------------------------------------
 
 process_folder(folder_path_train, padded_train)
 process_folder(folder_path_test, padded_test)
 
-#%%
-balanced_train_data = oversample_positive_class(padded_train, dataset_name="Train")
-balanced_test_data = oversample_positive_class(padded_test,  dataset_name="Test")
+#-------------------------------------------------------------------------------
 
-if not os.path.exists('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs'):
-        os.makedirs('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs')
+balanced_train_data = oversample_positive_class(padded_train, folder_name="Train")
+balanced_test_data = oversample_positive_class(padded_test,  folder_name="Test")
 
-output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "balanced_train_data.pkl")
+output_file_path_train = os.path.join(dataset_folder_helper, "balanced_train_data.pkl")
 with open(output_file_path_train, "wb") as file:
        pickle.dump(balanced_train_data, file)
 
-output_file_path_test = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "balanced_test_data.pkl")       
+output_file_path_test = os.path.join(dataset_folder_helper, "balanced_test_data.pkl")       
 with open(output_file_path_test, "wb") as file:
        pickle.dump(balanced_test_data, file)
 
-#%%
+#-------------------------------------------------------------------------------
+
 augmented_train = voice_augmentation(balanced_train_data)
 augmented_test = voice_augmentation(balanced_test_data)
-print('================ Audios have been augmented successfully ===============')
+print('==================== Audios have been augmented successfully =====================')
 
-output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "augmented_train.pkl")
+output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")
 with open(output_file_path_train, "wb") as file:
        pickle.dump(augmented_train, file)
 
-output_file_path_test = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "augmented_test.pkl")       
+output_file_path_test = os.path.join(dataset_folder_helper, "augmented_test.pkl")       
 with open(output_file_path_test, "wb") as file:
        pickle.dump(augmented_test, file)
-#%%       
-from helper.counting_augmented_samples import counting_aug_samples      
-positive_count,negative_count,total_count  = counting_aug_samples(augmented_train)
+#-------------------------------------------------------------------------------      
+from helper.counting_augmented_samples import counting_aug_samples
+
+positive_count,negative_count,total_count  = counting_aug_samples(dataset_folder_helper,'augmented_train.pkl')
 print("Number of Positive samples in train:", positive_count)
 print("Number of Negative samples in train:", negative_count)
 print('Total Number of samples in train:', total_count)
 
-positive_count,negative_count,total_count  = counting_aug_samples(augmented_test)
+positive_count,negative_count,test_count  = counting_aug_samples(dataset_folder_helper,'augmented_test.pkl')
 print("Number of Positive samples in test:", positive_count)
 print("Number of Negative samples in test:", negative_count)
-print('Total Number of samples in test:', total_count)
-#%%
+print('Total Number of samples in test:', test_count)
+#-------------------------------------------------------------------------------
+
 melspect_train_data = audio_to_melspect(augmented_train)
 melspect_test_data = audio_to_melspect(augmented_test)
-print('============== Audios have been converted to melspectrogram successfully ===============')
+print('============= Audios have been converted to melspectrogram successfully ==========')
 
-output_file_path_train = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "melspect_train_data.pkl")
+output_file_path_train = os.path.join(dataset_folder_helper, "melspect_train_data.pkl")
 with open(output_file_path_train, "wb") as file:
        pickle.dump(melspect_train_data, file)
 
-output_file_path_test = os.path.join('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', "melspect_test_data.pkl")       
+output_file_path_test = os.path.join(dataset_folder_helper, "melspect_test_data.pkl")       
 with open(output_file_path_test, "wb") as file:
        pickle.dump(melspect_test_data, file)
 
-#%%
+#-------------------------------------------------------------------------------
 y_train_one_hot,_ = label_encoder(melspect_train_data)
 y_test_one_hot, y_test_encoded = label_encoder(melspect_test_data)
 
-#%%
+#-------------------------------------------------------------------------------
 color_space = input("Enter 'g' for grayscale or 'r' for RGB: ")
 if color_space.lower() == 'g':
     melspect_train_array = melspect_array(melspect_train_data)
@@ -120,52 +127,53 @@ elif color_space.lower() == 'r':
 else:
     print("Invalid color space option. Please enter 'g' for grayscale or 'r' for RGB.")
          
-#%%
+#-------------------------------------------------------------------------------
 #earlystopping = callbacks.EarlyStopping(monitor = "val_loss", mode= "min",
                                         #patience= 10, restore_best_weights= True)
 
 scheduler = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
                                         patience=5, min_lr=1e-8, verbose=1)
 
-checkpointer = callbacks.ModelCheckpoint(filepath='/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/e_cnn_bigMass_augtest.hdf5',
+checkpointer = callbacks.ModelCheckpoint(filepath= dataset_folder_final + '/e_cnn_bigMass_augtest.hdf5',
                                          verbose=1, save_best_only=True)
-#%% Training
-_,_, test_count = counting_aug_samples(augmented_test)
+#---------------------------------  Training -----------------------------------
 data_kfold, model_history = kfold_training(melspect_train_array ,melspect_test_array,
                                            y_train_one_hot, y_test_one_hot,
                                            test_count, model, scheduler,
                                            checkpointer, k_fold=3, num_epochs=3)
-#%% saving models
-with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/modelhistory_cnn_e_big_testaug.pkl', 'wb') as f:                                      # Save model_history
+# -------------------------------- saving models -------------------------------
+with open(dataset_folder_final+'/modelhistory_cnn_e_big_testaug.pkl', 'wb') as f:                                      # Save model_history
     pickle.dump(model_history, f)
     
-with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/data_kfold_cnn_e_big_testaug.pkl', 'wb') as f:
+with open(dataset_folder_final+ '/data_kfold_cnn_e_big_testaug.pkl', 'wb') as f:
     pickle.dump(data_kfold, f)                                                               # Save data_kfold for prediction
 
-# Loading models
-with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/modelhistory_cnn_e_big_testaug.pkl', 'rb') as f:                                      # Load model_history
+#------------------------------- Loading models --------------------------------
+with open(dataset_folder_final + '/modelhistory_cnn_e_big_testaug.pkl', 'rb') as f:                                      # Load model_history
     loaded_model_history = pickle.load(f)
     
-with open('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
+with open(dataset_folder_final + '/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
-#%% Plotting learning curves
-plot_each_fold(model_history, dataset_name)
-plot_avg_fold(model_history, dataset_name)
+#---------------------------- Plotting learning curves -------------------------
+plot_each_fold(model_history, dataset_folder_plots)
+plot_avg_fold(model_history, dataset_folder_plots)
 
-#%%
+#-------------------------------------------------------------------------------
 predicted_labels = label_prediction(data_kfold)
 true_labels = y_test_encoded
 
-np.save('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/predicted_labels_e_cnn_big_testaug.npy', np.array(predicted_labels))
-np.save('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs/true_labels_bigmass_e_cnn_big_testaug.npy', np.array(true_labels))
+np.save(dataset_folder_final+'/predicted_labels_e_cnn_big_testaug.npy', np.array(predicted_labels))
+np.save(dataset_folder_final+'/true_labels_bigmass_e_cnn_big_testaug.npy', np.array(true_labels))
 
-
-#%%
-confusion_mat(true_labels, predicted_labels, dataset_name)
-classification_reports(true_labels, predicted_labels)
-roc_curve_function(true_labels, predicted_labels, dataset_name)
-
-#%%
+#-------------------------------------------------------------------------------
+confusion_mat(true_labels, predicted_labels, dataset_folder_plots)
+print("================ Confusion matrix has been plotted successfully ==================")
+classification_reports(true_labels, predicted_labels, dataset_folder_plots)
+print("================ Classification reports has been saved successfully ==============")
+roc_curve_function(true_labels, predicted_labels, dataset_folder_plots)
+print("================ ROC curve has been plotted successfully =========================")
+print ("=============================== FINISH ===========================================")
+#-------------------------------------------------------------------------------
 '''
 true_labels_original = np.load('true_labels_original_5_e_cnn.npy')
 predicted_labels_original = np.load('predicted_labels_original_5_e_cnn.npy')

@@ -1,14 +1,15 @@
 import os
 from sklearn.utils import resample
 
-def oversample_positive_class(data, dataset_name):
+def oversample_positive_class(data, folder_name):
     positive_samples = [sample for sample in data if sample[2] == 'Positive']
     negative_samples = [sample for sample in data if sample[2] == 'Negative']
 
     num_positive_samples_before = len(positive_samples)
-    print("Number of positive samples before balancing(" + dataset_name + "):", num_positive_samples_before)
+    print("==================================================================================")
+    print("Number of positive samples before balancing(" + folder_name + "):", num_positive_samples_before)
     num_negative_samples = len(negative_samples)
-    print("Number of negative samples(" + dataset_name + "):", num_negative_samples)
+    print("Number of negative samples(" + folder_name + "):", num_negative_samples)
 
     num_to_add = num_negative_samples - num_positive_samples_before
 
@@ -16,8 +17,8 @@ def oversample_positive_class(data, dataset_name):
     balanced_data = negative_samples  + positive_samples
 
     num_positive_samples_after = len(oversampled_positive_samples)
-    print("Number of added positive samples (" + dataset_name + "):", num_positive_samples_after)
-    print("=================================================================")
+    print("Number of added positive samples (" + folder_name + "):", num_positive_samples_after)
+    print("==================================================================================")
 
     filename_count = {}
     for sample in oversampled_positive_samples:
