@@ -20,8 +20,7 @@ big_mass['label'] = 'Mass'
 big_mass_count = len(big_mass)
 print(big_mass)
 print("Number of big_mass in csv file:", big_mass_count)
-
-#%% Copy the Big mass to the desired folder
+#------------------------------------------------------
 counter = 0
 mrns = big_mass['MRN'].tolist()
 file_dict = {}
@@ -32,14 +31,8 @@ for filename in os.listdir(positive_folder):
         first_dash_index = mrn.find('-')
         desired_substring = mrn[first_dash_index + 1:]
         if desired_substring in mrns:
-            if mrn not in file_dict:
-                file_dict[mrn] = 1
-            else:
-                file_dict[mrn] += 1
-            new_filename = f"{mrn}_{file_dict[mrn]}{os.path.splitext(filename)[1]}"
-            output_path = os.path.join(output_folder, new_filename)
+            output_path = os.path.join(output_folder, filename)
             shutil.copyfile(file_path, output_path)
-            print(f"Copied file: {filename} as {new_filename}")
             counter += 1
 print(f"Total samples copied: {counter}")
 
