@@ -27,19 +27,29 @@ import matplotlib.pyplot as plt
 
 
 #-------------------------------------------------------------------------------
-KFOLD = 3
-EPOCH = 3
+KFOLD = 10
+EPOCH = 100
 BATCH = 64
 padded_train = []
 padded_test = []
-folder_path_train= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/train'
-folder_path_test= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/val'
 
-
-dataset_name = get_dataset_name(folder_path_train)
-dataset_folder_helper = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', dataset_name)
-dataset_folder_final = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs', dataset_name)
-dataset_folder_plots = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots', dataset_name)
+visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf: ")
+if visualizing_selection.lower() == 'm':
+    folder_path_train= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/train'
+    folder_path_test= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/val'
+    dataset_name = get_dataset_name(folder_path_train, -4)
+    dataset_folder_helper = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', dataset_name)
+    dataset_folder_final = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs', dataset_name)
+    dataset_folder_plots = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots', dataset_name)
+    var_leaf = False
+elif visualizing_selection.lower() == 'l':
+    folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
+    folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
+    dataset_name = get_dataset_name(folder_path_train,-5)
+    dataset_folder_helper = make_dataset_folder ('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', dataset_name)
+    dataset_folder_final = make_dataset_folder ('C:/Users/zahra/VoiceColab/outputs/FinalOutputs', dataset_name)
+    dataset_folder_plots = make_dataset_folder ('C:/Users/zahra/VoiceColab/outputs/Plots', dataset_name)
+    var_leaf = True
 #-------------------------------------------------------------------------------
 
 process_folder(folder_path_train, padded_train)
@@ -84,13 +94,11 @@ print("Number of Positive samples in test:", positive_count)
 print("Number of Negative samples in test:", negative_count)
 print('Total Number of samples in test:', test_count)
 #-------------------------------------------------------------------------------
-visualizing_selection = input("Enter 'm' to convert audio to Melspectrogram --or-- 'l' to convert them to Leaf: ")
-if visualizing_selection.lower() == 'm':
+if var_leaf == False:
     melspect_train_data = audio_to_melspect(augmented_train)
     melspect_test_data = audio_to_melspect(augmented_test)
     train_data = melspect_train_data
     test_data = melspect_test_data
-    boolean_leaf = False
     print('============= Audios have been converted to Melspectrogram successfully ==========')
 
     output_file_path_train = os.path.join(dataset_folder_helper, "melspect_train_data.pkl")
@@ -101,12 +109,11 @@ if visualizing_selection.lower() == 'm':
     with open(output_file_path_test, "wb") as file:
            pickle.dump(melspect_test_data, file)
 
-elif visualizing_selection.lower() == 'l':
+else:
         lf_representation_train = leaf_representation(folder_path_train)
         lf_representation_test = leaf_representation(folder_path_test)
         train_data = lf_representation_train
         test_data = lf_representation_test
-        boolean_leaf = True
         print('============= Audios have been converted to Leaf successfully ==========')
         
         output_file_path_train = os.path.join(dataset_folder_helper, "leaf_train_data.pkl")
@@ -122,17 +129,17 @@ y_train_one_hot,_ = label_encoder(train_data)
 y_test_one_hot, y_test_encoded = label_encoder(test_data)
 
 #-------------------------------------------------------------------------------
-color_space = input("Enter 'g' for grayscale or 'r' for RGB: ")
-if color_space.lower() == 'g':
-    train_array = melspect_array(train_data, boolean_leaf)
-    test_array = melspect_array(test_data, boolean_leaf)
+learning_selection = input("Enter 'd' for Deeplearning or 't' for TransferLearning: ")
+if learning_selection.lower() == 'd':
+    train_array = melspect_array(train_data, var_leaf)
+    test_array = melspect_array(test_data, var_leaf)
     input_shape = train_array.shape[1:]     #input_shape = (128,431,1)
     num_classes = 2
     model = cnn_function(input_shape, 2)
     model.summary()
-elif color_space.lower() == 'r':
-    train_array = melspect_array(train_data,boolean_leaf)
-    test_array = melspect_array(test_data,boolean_leaf)
+elif learning_selection.lower() == 't':
+    train_array = melspect_array(train_data, var_leaf)
+    test_array = melspect_array(test_data, var_leaf)
     train_array = np.repeat(train_array, 3, axis=-1)
     test_array = np.repeat(test_array, 3, axis=-1)
     input_shape = train_array.shape[1:]
@@ -150,9 +157,7 @@ elif color_space.lower() == 'r':
         print("Invalid transfer learning option. Please enter 'r' for Resnet50, 'i' for InceptionV3, or 'x' for Xception.")
 else:
     print("Invalid color space option. Please enter 'g' for grayscale or 'r' for RGB.")
-  
-print(test_array) 
-print(y_test_one_hot)      
+      
 #-------------------------------------------------------------------------------
 #earlystopping = callbacks.EarlyStopping(monitor = "val_loss", mode= "min",
                                         #patience= 10, restore_best_weights= True)
@@ -160,7 +165,7 @@ print(y_test_one_hot)
 scheduler = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
                                         patience=5, min_lr=1e-8, verbose=1)
 
-checkpointer = callbacks.ModelCheckpoint(filepath= dataset_folder_final + '/e_cnn_bigMass_augtest.hdf5',
+checkpointer = callbacks.ModelCheckpoint(filepath = dataset_folder_final + '/e_cnn_leaf.hdf5',
                                          verbose=1, save_best_only=True)
 #---------------------------------  Training -----------------------------------
 print('================= Training will start with {KFOLD}-fold cross validation and {EPOCH} epochs ========================')
@@ -168,19 +173,19 @@ data_kfold, model_history = kfold_training(train_array, test_array,
                                            y_train_one_hot, y_test_one_hot,
                                            test_count, model, scheduler,
                                            checkpointer, k_fold = KFOLD,
-                                           Batch_size= BATCH, num_epochs = EPOCH, boolean_leaf)
+                                           Batch_size= BATCH, num_epochs = EPOCH, var_leaf= var_leaf)
 # -------------------------------- saving models -------------------------------
-with open(dataset_folder_final+'/modelhistory_cnn_e_big_testaug.pkl', 'wb') as f:                                      # Save model_history
+with open(dataset_folder_final+'/modelhistory_cnn_e_leaf.pkl', 'wb') as f:            # Save model_history
     pickle.dump(model_history, f)
     
-with open(dataset_folder_final+ '/data_kfold_cnn_e_big_testaug.pkl', 'wb') as f:
+with open(dataset_folder_final+ '/data_kfold_cnn_e_leaf.pkl', 'wb') as f:
     pickle.dump(data_kfold, f)                                                               # Save data_kfold for prediction
 
 #------------------------------- Loading models --------------------------------
-with open(dataset_folder_final + '/modelhistory_cnn_e_big_testaug.pkl', 'rb') as f:                                      # Load model_history
+with open(dataset_folder_final + '/modelhistory_cnn_e_leaf.pkl', 'rb') as f:                                      # Load model_history
     loaded_model_history = pickle.load(f)
     
-with open(dataset_folder_final + '/data_kfold_cnn_e_big_testaug.pkl', 'rb') as f:                                        # Load data_kfold for prediction
+with open(dataset_folder_final + '/data_kfold_cnn_e_big_leaf.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
 #---------------------------- Plotting learning curves -------------------------
 plot_each_fold(model_history, dataset_folder_plots)
@@ -190,8 +195,8 @@ plot_avg_fold(model_history, dataset_folder_plots)
 predicted_labels = label_prediction(data_kfold)
 true_labels = y_test_encoded
 
-np.save(dataset_folder_final+'/predicted_labels_e_cnn_big_testaug.npy', np.array(predicted_labels))
-np.save(dataset_folder_final+'/true_labels_bigmass_e_cnn_big_testaug.npy', np.array(true_labels))
+np.save(dataset_folder_final+'/predicted_labels_e_cnn_leaf.npy', np.array(predicted_labels))
+np.save(dataset_folder_final+'/true_labels_bigmass_e_cnn_leaf.npy', np.array(true_labels))
 
 #-------------------------------------------------------------------------------
 confusion_mat(true_labels, predicted_labels, dataset_folder_plots)

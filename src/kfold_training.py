@@ -10,7 +10,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 def kfold_training(melspect_train_array, melspect_test_array,
                    y_train_one_hot, y_test_one_hot, test_count,
                    model, scheduler,checkpointer, k_fold,
-                   Batch_size, num_epochs, boolean_leaf):
+                   Batch_size, num_epochs, var_leaf):
     j = 0
     num_k = k_fold
     BATCH_SIZE = Batch_size
@@ -22,7 +22,7 @@ def kfold_training(melspect_train_array, melspect_test_array,
     kfold = KFold(n_splits = num_k, shuffle=True, random_state=42)
     for train_idx, val_idx in list(kfold.split(melspect_train_array,y_train_one_hot)):
         print("Training on Fold: ",j+1)
-        if boolean_leaf:
+        if var_leaf:
             train_idx_tensor = tf.convert_to_tensor(train_idx, dtype=tf.int32)
             val_idx_tensor = tf.convert_to_tensor(val_idx, dtype=tf.int32)
             x_train_df = tf.gather(melspect_train_array, train_idx_tensor)
