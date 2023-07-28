@@ -10,11 +10,12 @@ from src.label_prediction import label_prediction
 from src.confusion_mat import confusion_mat
 from src.classification_report import classification_reports
 from src.roc_curve_function import roc_curve_function
-from src.all_roc_curves import all_roc_curves
+#from src.all_roc_curves import all_roc_curves
 from src.melspect_array import melspect_array
-from src.get_dataset_name import get_dataset_name
-from src.make_dataset_folder import make_dataset_folder
+#from src.get_dataset_name import get_dataset_name
+#from src.make_dataset_folder import make_dataset_folder
 from src.leaf_representation import leaf_representation
+from src.learning_selection_function import learning_selection_function
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
@@ -33,23 +34,20 @@ BATCH = 64
 padded_train = []
 padded_test = []
 
+folder_path_train = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
+folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
+
+folder_path_train_leaf = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
+folder_path_test_leaf = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
+
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf: ")
 if visualizing_selection.lower() == 'm':
-    folder_path_train= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/train'
-    folder_path_test= 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/val'
-    dataset_name = get_dataset_name(folder_path_train, -4)
-    dataset_folder_helper = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/HelpersOutputs', dataset_name)
-    dataset_folder_final = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/FinalOutputs', dataset_name)
-    dataset_folder_plots = make_dataset_folder ('/content/drive/My Drive/VoiceProcessingProject_Outputs/Plots', dataset_name)
     var_leaf = False
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name = learning_selection_function(folder_path_train, folder_path_test, var_leaf)
 elif visualizing_selection.lower() == 'l':
-    folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
-    folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
-    dataset_name = get_dataset_name(folder_path_train,-5)
-    dataset_folder_helper = make_dataset_folder ('C:/Users/zahra/VoiceColab/outputs/HelpersOutputs', dataset_name)
-    dataset_folder_final = make_dataset_folder ('C:/Users/zahra/VoiceColab/outputs/FinalOutputs', dataset_name)
-    dataset_folder_plots = make_dataset_folder ('C:/Users/zahra/VoiceColab/outputs/Plots', dataset_name)
     var_leaf = True
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name = learning_selection_function(folder_path_train_leaf, folder_path_test_leaf, var_leaf)
+
 #-------------------------------------------------------------------------------
 
 process_folder(folder_path_train, padded_train)
@@ -129,7 +127,7 @@ y_train_one_hot,_ = label_encoder(train_data)
 y_test_one_hot, y_test_encoded = label_encoder(test_data)
 
 #-------------------------------------------------------------------------------
-learning_selection = input("Enter 'd' for Deeplearning or 't' for TransferLearning: ")
+learning_selection = input("Enter 'd' for DeepLearning or 't' for TransferLearning: ")
 if learning_selection.lower() == 'd':
     train_array = melspect_array(train_data, var_leaf)
     test_array = melspect_array(test_data, var_leaf)
@@ -185,7 +183,7 @@ with open(dataset_folder_final+ '/data_kfold_cnn_e_leaf.pkl', 'wb') as f:
 with open(dataset_folder_final + '/modelhistory_cnn_e_leaf.pkl', 'rb') as f:                                      # Load model_history
     loaded_model_history = pickle.load(f)
     
-with open(dataset_folder_final + '/data_kfold_cnn_e_big_leaf.pkl', 'rb') as f:                                        # Load data_kfold for prediction
+with open(dataset_folder_final + '/data_kfold_cnn_e_leaf.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
 #---------------------------- Plotting learning curves -------------------------
 plot_each_fold(model_history, dataset_folder_plots)
