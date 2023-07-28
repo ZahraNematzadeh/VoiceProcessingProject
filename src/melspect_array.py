@@ -1,8 +1,8 @@
 import numpy as np
 import tensorflow as tf
 
-def melspect_array(melspect_data, boolean_leaf):
-    if boolean_leaf: 
+def melspect_array(melspect_data, var_leaf):
+    if var_leaf: 
        leaf_list = [item[0] for item in melspect_data]        
        leaf_cell = tf.stack(leaf_list, axis=0)
        leaf_cell = tf.transpose(leaf_cell, [0, 2, 1])

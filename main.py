@@ -15,6 +15,7 @@ from src.melspect_array import melspect_array
 #from src.get_dataset_name import get_dataset_name
 #from src.make_dataset_folder import make_dataset_folder
 from src.leaf_representation import leaf_representation
+from src.custom_leaf_representation import custom_leaf_representation
 from src.learning_selection_function import learning_selection_function
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
@@ -28,8 +29,8 @@ import matplotlib.pyplot as plt
 
 
 #-------------------------------------------------------------------------------
-KFOLD = 10
-EPOCH = 100
+KFOLD = 3
+EPOCH = 3
 BATCH = 64
 padded_train = []
 padded_test = []
@@ -43,10 +44,10 @@ folder_path_test_leaf = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/Clustere
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf: ")
 if visualizing_selection.lower() == 'm':
     var_leaf = False
-    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name = learning_selection_function(folder_path_train, folder_path_test, var_leaf)
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train, folder_path_test, var_leaf)
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
-    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name = learning_selection_function(folder_path_train_leaf, folder_path_test_leaf, var_leaf)
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train_leaf, folder_path_test_leaf, var_leaf)
 
 #-------------------------------------------------------------------------------
 
@@ -107,9 +108,12 @@ if var_leaf == False:
     with open(output_file_path_test, "wb") as file:
            pickle.dump(melspect_test_data, file)
 
-else:
-        lf_representation_train = leaf_representation(folder_path_train)
-        lf_representation_test = leaf_representation(folder_path_test)
+else:   
+    
+        lf_representation_train = custom_leaf_representation(folder_path_train)
+        lf_representation_test = custom_leaf_representation(folder_path_test)
+        #lf_representation_train = leaf_representation(folder_path_train)
+        #lf_representation_test = leaf_representation(folder_path_test)
         train_data = lf_representation_train
         test_data = lf_representation_test
         print('============= Audios have been converted to Leaf successfully ==========')
@@ -127,34 +131,29 @@ y_train_one_hot,_ = label_encoder(train_data)
 y_test_one_hot, y_test_encoded = label_encoder(test_data)
 
 #-------------------------------------------------------------------------------
-learning_selection = input("Enter 'd' for DeepLearning or 't' for TransferLearning: ")
-if learning_selection.lower() == 'd':
+if var_cnn:
     train_array = melspect_array(train_data, var_leaf)
     test_array = melspect_array(test_data, var_leaf)
     input_shape = train_array.shape[1:]     #input_shape = (128,431,1)
     num_classes = 2
     model = cnn_function(input_shape, 2)
     model.summary()
-elif learning_selection.lower() == 't':
+else:
     train_array = melspect_array(train_data, var_leaf)
     test_array = melspect_array(test_data, var_leaf)
     train_array = np.repeat(train_array, 3, axis=-1)
     test_array = np.repeat(test_array, 3, axis=-1)
     input_shape = train_array.shape[1:]
-    transfer_learning = input("Enter 'r' for Resnet50 or 'i' for InceptionV3 or 'x' for Xception: ")
-    if transfer_learning.lower() == 'r':
+    if var_resnet:
         model = resnet50(input_shape)
         model.summary()
-    elif transfer_learning.lower() == 'i':
+    elif var_inception:
         model = inceptionv3(input_shape)
         model.summary()
-    elif transfer_learning.lower() == 'x':
+    elif var_xception:
         model = xception(input_shape)
         model.summary()
-    else:
-        print("Invalid transfer learning option. Please enter 'r' for Resnet50, 'i' for InceptionV3, or 'x' for Xception.")
-else:
-    print("Invalid color space option. Please enter 'g' for grayscale or 'r' for RGB.")
+    
       
 #-------------------------------------------------------------------------------
 #earlystopping = callbacks.EarlyStopping(monitor = "val_loss", mode= "min",
