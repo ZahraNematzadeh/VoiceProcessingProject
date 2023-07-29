@@ -29,8 +29,8 @@ import matplotlib.pyplot as plt
 
 
 #-------------------------------------------------------------------------------
-KFOLD = 3
-EPOCH = 3
+KFOLD = 10
+EPOCH = 10
 BATCH = 64
 padded_train = []
 padded_test = []
@@ -110,10 +110,10 @@ if var_leaf == False:
 
 else:   
     
-        lf_representation_train = custom_leaf_representation(folder_path_train)
-        lf_representation_test = custom_leaf_representation(folder_path_test)
-        #lf_representation_train = leaf_representation(folder_path_train)
-        #lf_representation_test = leaf_representation(folder_path_test)
+        #lf_representation_train = custom_leaf_representation(augmented_train)
+        #lf_representation_test = custom_leaf_representation(augmented_test)
+        lf_representation_train = leaf_representation(augmented_train)
+        lf_representation_test = leaf_representation(augmented_test)
         train_data = lf_representation_train
         test_data = lf_representation_test
         print('============= Audios have been converted to Leaf successfully ==========')

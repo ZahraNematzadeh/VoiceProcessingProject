@@ -1,29 +1,18 @@
-import os
+import numpy as np
 import tensorflow as tf
 import leaf_audio.frontend as frontend
 
-def leaf_representation(folder_path):
-    leaf_list = []
-    leaf = frontend.Leaf()
-    labels = ['Positive', 'Negative']
-    for label in labels:
-        subfolder_path = os.path.join(folder_path, label)
-        for audio_file in os.listdir(subfolder_path):
-            if audio_file.endswith('.wav'):
-                file_path = os.path.join(subfolder_path, audio_file)
-                raw_audio = tf.io.read_file(file_path)
-                waveform = tf.audio.decode_wav(raw_audio, desired_channels=1, desired_samples=16000)
-                waveform = tf.transpose(waveform.audio)
-                lf = leaf(waveform)
-                lf = tf.transpose(lf,[2,1,0])
-                leaf_audio =lf[:, :, 0]
-                filename = os.path.splitext(audio_file)[0]
-                leaf_list.append((leaf_audio.numpy(), filename, label))
-    return leaf_list
 
+def leaf_representation(data_list):
+    leaf_list = []
+    leaf = frontend.Leaf()  
+    for data_entry in data_list:
+        audio_array, filename, label = data_entry
+        audio_tensor = tf.convert_to_tensor(audio_array, dtype=tf.float32)[tf.newaxis, :]
+        
+        lf = leaf(audio_tensor)  
+        lf = tf.transpose(lf, [2, 1, 0])
+        leaf_audio = lf[:, :, 0]
+        leaf_list.append((leaf_audio.numpy(), filename, label))
     
-    
-    
-    
-   
-   
+    return leaf_list
