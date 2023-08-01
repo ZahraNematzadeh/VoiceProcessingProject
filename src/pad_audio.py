@@ -20,7 +20,7 @@ def padding_audio(signal, max_duration, sample_rate):
         padded_signal = padded_signal
     return padded_signal
 
-def process_folder(folder_path, padded_list):
+def pad_audio(folder_path, padded_list):
     for root, dirs, files in os.walk(folder_path):
         for filename in files:
             if filename.endswith('.wav'):
@@ -31,8 +31,8 @@ def process_folder(folder_path, padded_list):
                 padded_list.append((padded_audio, filename, label))
 
 if __name__=='__main__':
-    process_folder(folder_path_train, padded_train)
-    process_folder(folder_path_test, padded_test)
+    pad_audio(folder_path_train, padded_train)
+    pad_audio(folder_path_test, padded_test)
     
     #Inspecting padded audios
     for item in padded_train:    #or padded_test

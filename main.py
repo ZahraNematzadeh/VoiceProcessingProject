@@ -1,4 +1,5 @@
-from src.padding_audio import process_folder
+from src.pad_audio import pad_audio
+from src.pad_audio_leaf import pad_audio_leaf
 from src.oversampling_mass import oversample_positive_class
 from src.augmentation_mass import voice_augmentation
 from src.converting_to_melspectrogram import audio_to_melspect
@@ -17,6 +18,9 @@ from src.melspect_array import melspect_array
 from src.leaf_representation import leaf_representation
 from src.custom_leaf_representation import custom_leaf_representation
 from src.learning_selection_function import learning_selection_function
+from src.signal_to_leaf import signal_to_leaf
+
+
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
@@ -45,14 +49,21 @@ visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --o
 if visualizing_selection.lower() == 'm':
     var_leaf = False
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train, folder_path_test, var_leaf)
+    pad_audio(folder_path_train, padded_train)
+    pad_audio(folder_path_test, padded_test)
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train_leaf, folder_path_test_leaf, var_leaf)
-
+    
+    
+    leaf_train = signal_to_leaf(folder_path_train_leaf)
+    leaf_test = signal_to_leaf(folder_path_test_leaf)
+    
+    padded_train = pad_audio_leaf(leaf_train, 5, 16000)
+    padded_test = pad_audio_leaf(leaf_test, 5, 16000)
 #-------------------------------------------------------------------------------
 
-process_folder(folder_path_train, padded_train)
-process_folder(folder_path_test, padded_test)
+
 
 #-------------------------------------------------------------------------------
 
@@ -68,9 +79,8 @@ with open(output_file_path_test, "wb") as file:
        pickle.dump(balanced_test_data, file)
 
 #-------------------------------------------------------------------------------
-
-augmented_train = voice_augmentation(balanced_train_data)
-augmented_test = voice_augmentation(balanced_test_data)
+augmented_train = voice_augmentation(balanced_train_data, var_leaf)
+augmented_test = voice_augmentation(balanced_test_data, var_leaf)
 print('==================== Audios have been augmented successfully =====================')
 
 output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")
@@ -110,21 +120,9 @@ if var_leaf == False:
 
 else:   
     
-        #lf_representation_train = custom_leaf_representation(augmented_train)
-        #lf_representation_test = custom_leaf_representation(augmented_test)
-        lf_representation_train = leaf_representation(augmented_train)
-        lf_representation_test = leaf_representation(augmented_test)
-        train_data = lf_representation_train
-        test_data = lf_representation_test
-        print('============= Audios have been converted to Leaf successfully ==========')
-        
-        output_file_path_train = os.path.join(dataset_folder_helper, "leaf_train_data.pkl")
-        with open(output_file_path_train, "wb") as file:
-               pickle.dump(lf_representation_train, file)
-
-        output_file_path_test = os.path.join(dataset_folder_helper, "leaf_test_data.pkl")       
-        with open(output_file_path_test, "wb") as file:
-               pickle.dump(lf_representation_test, file)
+    train_data = augmented_train
+    test_data = augmented_test
+    print('============= Audios have been converted to Leaf successfully ==========')
 
 #-------------------------------------------------------------------------------
 y_train_one_hot,_ = label_encoder(train_data)
@@ -134,7 +132,7 @@ y_test_one_hot, y_test_encoded = label_encoder(test_data)
 if var_cnn:
     train_array = melspect_array(train_data, var_leaf)
     test_array = melspect_array(test_data, var_leaf)
-    input_shape = train_array.shape[1:]     #input_shape = (128,431,1)
+    input_shape = train_array.shape[1:]    
     num_classes = 2
     model = cnn_function(input_shape, 2)
     model.summary()
@@ -145,8 +143,8 @@ else:
     test_array = np.repeat(test_array, 3, axis=-1)
     input_shape = train_array.shape[1:]
     if var_resnet:
-        model = resnet50(input_shape)
-        model.summary()
+        model = resnet50(input_shape)          #input_shape = (128,431,1)
+        model.summary()                        #leaf_input_shape = (40,100,1)
     elif var_inception:
         model = inceptionv3(input_shape)
         model.summary()

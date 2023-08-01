@@ -2,9 +2,10 @@ import os
 import tensorflow as tf
 import leaf_audio.frontend as frontend
 
+leaf = frontend.Leaf()
 def signal_to_leaf(folder_path):
+    
     leaf_list = []
-    leaf = frontend.Leaf()
     labels = ['Positive', 'Negative']
     for label in labels:
         subfolder_path = os.path.join(folder_path, label)

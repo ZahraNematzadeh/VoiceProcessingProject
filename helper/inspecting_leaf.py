@@ -39,11 +39,6 @@ def visualizing_leaf(folder_path, filename):
             else:
                 print("WRONG KEY!!!")
             
-            
-    output_file_path = os.path.join(dataset_folder_helper,filename )
-    with open(output_file_path, "rb") as file:
-        leaf_data = pickle.load(file)
-            
     num_samples = int(input("Enter the number of samples to visualize: "))
     variable_name = "train" if "train" in filename else "validation" if "validation" in filename else "test"
     if "train" in variable_name:
@@ -53,16 +48,20 @@ def visualizing_leaf(folder_path, filename):
     if "test" in variable_name:
         print("Data type: test")
         print('==============================================================')
-        random.shuffle(leaf_data)
-           
-            
+     
+    output_file_path = os.path.join(dataset_folder_helper,filename )
+    with open(output_file_path, "rb") as file:
+        leaf_data = pickle.load(file)     
+         
     for i in range(num_samples):
+        random.shuffle(leaf_data)
         leaf_array, filename, label = leaf_data[i]
-        
+        leaf_array = np.array(leaf_array)
         if len(leaf_array.shape) > 2:
             leaf_array = np.squeeze(leaf_array)
         
         print("Leaf shape:", leaf_array.shape)
+        plt.figure(figsize=(4, 3))
         plt.title(f'{filename} | Label: {label}', fontsize=10)
         plt.pcolormesh(leaf_array)
         plt.savefig(os.path.join(dataset_folder_plots,  f'leaf_{i}.png'), dpi =1000)
@@ -74,5 +73,5 @@ if __name__ == '__main__':
     folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
     folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
     
-    visualizing_leaf(folder_path_train, "leaf_train_data.pkl")
- # visualizing_leaf(folder_path_test, "leaf_test_data.pkl")
+    visualizing_leaf(folder_path_train, "augmented_train.pkl")
+ # visualizing_leaf(folder_path_test, "augmented_test.pkl")
