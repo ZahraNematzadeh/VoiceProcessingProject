@@ -1,7 +1,12 @@
 from src.pad_audio import pad_audio
+from src.learning_selection_function import learning_selection_function
 from src.oversampling_mass import oversample_positive_class
 from src.augmentation import augmentation
 from src.to_melspectrogram import to_melspectrogram
+from src.decode_wave import decode_wave
+from src.to_leaf import to_leaf
+from src.to_custom_leaf import to_custom_leaf
+from src.input_array import input_array
 from src.label_encoder import label_encoder
 from src.kfold_training import kfold_training
 from src.plot_each_fold import plot_each_fold
@@ -11,60 +16,58 @@ from src.confusion_mat import confusion_mat
 from src.classification_report import classification_reports
 from src.roc_curve_function import roc_curve_function
 #from src.all_roc_curves import all_roc_curves
-from src.input_array import input_array
 #from src.leaf_representation import leaf_representation
-from src.to_custom_leaf import to_custom_leaf
-from src.learning_selection_function import learning_selection_function
-from src.decode_wave import decode_wave
-from src.to_leaf import to_leaf
+
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
 from models.xception import xception
+
 import os
 import pickle
 import numpy as np
 from keras import callbacks
-import matplotlib.pyplot as plt
 
+from config import (folder_path_train, folder_path_test, folder_path_train_leaf, folder_path_test_leaf,
+                    K_fold, Epoch, Batch_size)
 
 #-------------------------------------------------------------------------------
-KFOLD = 10
-EPOCH = 10
-BATCH = 64
+KFOLD = K_fold
+EPOCH = Epoch
+BATCH = Batch_size
 padded_train = []
 padded_test = []
 
-folder_path_train = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
-folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
+path_train = folder_path_train_leaf
+path_test = folder_path_test_leaf
 
-folder_path_train_leaf = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
-folder_path_test_leaf = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
+path_train_leaf = folder_path_train_leaf
+path_test_leaf = folder_path_train_leaf
 
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf: ")
 
 if visualizing_selection.lower() == 'm':
     var_leaf = False
-    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train, folder_path_test, var_leaf)
-    pad_audio(folder_path_train, padded_train)
-    pad_audio(folder_path_test, padded_test)
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
+    wave_train = pad_audio(path_train, padded_train)
+    wave_test = pad_audio(path_test, padded_test)
 
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
-    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train_leaf, folder_path_test_leaf, var_leaf)
-    wave_train = decode_wave(folder_path_train_leaf)
-    wave_test = decode_wave(folder_path_test_leaf)
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train_leaf, path_test_leaf, var_leaf)
+    wave_train = decode_wave(path_train_leaf)
+    wave_test = decode_wave(path_test_leaf)
     
 #-------------------------------------------------------------------------------
 
-padded_train = wave_train
-padded_test = wave_test 
+train_data = wave_train
+test_data = wave_test 
 
 #-------------------------------------------------------------------------------
 
-balanced_train_data = oversample_positive_class(padded_train, folder_name="Train")
-balanced_test_data = oversample_positive_class(padded_test,  folder_name="Test")
+balanced_train_data = oversample_positive_class(train_data, folder_name="Train")
+balanced_test_data = oversample_positive_class(test_data, folder_name="Test")
 
 output_file_path_train = os.path.join(dataset_folder_helper, "balanced_train_data.pkl")
 with open(output_file_path_train, "wb") as file:

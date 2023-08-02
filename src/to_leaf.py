@@ -7,7 +7,7 @@ leaf = frontend.Leaf()
 def to_leaf (audio_signal):
     leaf_list = []
     for sample in audio_signal:
-        audio, filename, label = sample
+        audio, filename, label = sample        
         name, extension = os.path.splitext(filename)
         wave = tf.convert_to_tensor(audio)
         wave = tf.reshape(wave, (1, 16000))

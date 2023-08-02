@@ -12,8 +12,11 @@ def make_dataset_folder(folder_path, dataset_name, visualizing, learning_name):
     if not os.path.exists(visualizing_folder):
         os.makedirs(visualizing_folder)
     
-    learning_folder = os.path.join(visualizing_folder, learning_name)
-    if not os.path.exists(learning_folder):
-        os.makedirs(learning_folder)
-       
-    return learning_folder
+    
+    if learning_name is not None:
+        learning_folder = os.path.join(visualizing_folder, learning_name)
+        if not os.path.exists(learning_folder):
+            os.makedirs(learning_folder)
+        return learning_folder
+    else:
+        return visualizing_folder 

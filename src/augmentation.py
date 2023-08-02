@@ -14,7 +14,7 @@ def augmentation(balanced_data, var_leaf):
     aug_tech = [ naa.LoudnessAug(zone = (0,1)),
                  #naa.CropAug(sampling_rate = sample_rate),
                  #naa.MaskAug(sampling_rate = sample_rate, zone=(0.2, 0.8),coverage= 0.7, mask_with_noise = False),
-                 naa.NoiseAug(zone = (0,1), color='random'),
+                 naa.NoiseAug(zone = (0,1), color='white'),
                  naa.PitchAug(sampling_rate = sample_rate, zone = (0,1))
                 ] 
 
