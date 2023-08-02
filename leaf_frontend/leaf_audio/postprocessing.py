@@ -1166,37 +1166,6 @@ class SpectrumAugmenter(base_layer.BaseLayer):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 '''
 @gin.configurable
 class SpecAugment(tf.keras.layers.Layer):
