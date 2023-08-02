@@ -1,8 +1,7 @@
 from src.pad_audio import pad_audio
-from src.pad_audio_leaf import pad_audio_leaf
 from src.oversampling_mass import oversample_positive_class
-from src.augmentation_mass import voice_augmentation
-from src.converting_to_melspectrogram import audio_to_melspect
+from src.augmentation import augmentation
+from src.to_melspectrogram import to_melspectrogram
 from src.label_encoder import label_encoder
 from src.kfold_training import kfold_training
 from src.plot_each_fold import plot_each_fold
@@ -12,14 +11,12 @@ from src.confusion_mat import confusion_mat
 from src.classification_report import classification_reports
 from src.roc_curve_function import roc_curve_function
 #from src.all_roc_curves import all_roc_curves
-from src.melspect_array import melspect_array
-#from src.get_dataset_name import get_dataset_name
-#from src.make_dataset_folder import make_dataset_folder
-from src.leaf_representation import leaf_representation
-from src.custom_leaf_representation import custom_leaf_representation
+from src.input_array import input_array
+#from src.leaf_representation import leaf_representation
+from src.to_custom_leaf import to_custom_leaf
 from src.learning_selection_function import learning_selection_function
-from src.signal_to_leaf import signal_to_leaf
-
+from src.decode_wave import decode_wave
+from src.to_leaf import to_leaf
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
@@ -46,24 +43,23 @@ folder_path_train_leaf = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/Cluster
 folder_path_test_leaf = 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
 
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf: ")
+
 if visualizing_selection.lower() == 'm':
     var_leaf = False
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train, folder_path_test, var_leaf)
     pad_audio(folder_path_train, padded_train)
     pad_audio(folder_path_test, padded_test)
+
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(folder_path_train_leaf, folder_path_test_leaf, var_leaf)
+    wave_train = decode_wave(folder_path_train_leaf)
+    wave_test = decode_wave(folder_path_test_leaf)
     
-    
-    leaf_train = signal_to_leaf(folder_path_train_leaf)
-    leaf_test = signal_to_leaf(folder_path_test_leaf)
-    
-    padded_train = pad_audio_leaf(leaf_train, 5, 16000)
-    padded_test = pad_audio_leaf(leaf_test, 5, 16000)
 #-------------------------------------------------------------------------------
 
-
+padded_train = wave_train
+padded_test = wave_test 
 
 #-------------------------------------------------------------------------------
 
@@ -79,8 +75,8 @@ with open(output_file_path_test, "wb") as file:
        pickle.dump(balanced_test_data, file)
 
 #-------------------------------------------------------------------------------
-augmented_train = voice_augmentation(balanced_train_data, var_leaf)
-augmented_test = voice_augmentation(balanced_test_data, var_leaf)
+augmented_train = augmentation(balanced_train_data, var_leaf)
+augmented_test = augmentation(balanced_test_data, var_leaf)
 print('==================== Audios have been augmented successfully =====================')
 
 output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")
@@ -104,24 +100,34 @@ print("Number of Negative samples in test:", negative_count)
 print('Total Number of samples in test:', test_count)
 #-------------------------------------------------------------------------------
 if var_leaf == False:
-    melspect_train_data = audio_to_melspect(augmented_train)
-    melspect_test_data = audio_to_melspect(augmented_test)
-    train_data = melspect_train_data
-    test_data = melspect_test_data
+    train_data = to_melspectrogram(augmented_train)
+    test_data = to_melspectrogram(augmented_test)
+    
     print('============= Audios have been converted to Melspectrogram successfully ==========')
 
     output_file_path_train = os.path.join(dataset_folder_helper, "melspect_train_data.pkl")
     with open(output_file_path_train, "wb") as file:
-           pickle.dump(melspect_train_data, file)
+           pickle.dump(train_data, file)
 
     output_file_path_test = os.path.join(dataset_folder_helper, "melspect_test_data.pkl")       
     with open(output_file_path_test, "wb") as file:
-           pickle.dump(melspect_test_data, file)
+           pickle.dump(test_data, file)
 
 else:   
+    train_data  = to_leaf(augmented_train)
+    test_data = to_leaf(augmented_test)
     
-    train_data = augmented_train
-    test_data = augmented_test
+    #train_data  = to_custom_leaf(augmented_train)
+    #test_data = to_custom_leaf(augmented_test)
+    
+    output_file_path_train = os.path.join(dataset_folder_helper, "leaf_train_data.pkl")
+    with open(output_file_path_train, "wb") as file:
+           pickle.dump(train_data, file)
+
+    output_file_path_test = os.path.join(dataset_folder_helper, "leaf_test_data.pkl")       
+    with open(output_file_path_test, "wb") as file:
+           pickle.dump(test_data, file)
+    
     print('============= Audios have been converted to Leaf successfully ==========')
 
 #-------------------------------------------------------------------------------
@@ -130,15 +136,15 @@ y_test_one_hot, y_test_encoded = label_encoder(test_data)
 
 #-------------------------------------------------------------------------------
 if var_cnn:
-    train_array = melspect_array(train_data, var_leaf)
-    test_array = melspect_array(test_data, var_leaf)
+    train_array = input_array(train_data, var_leaf)
+    test_array = input_array(test_data, var_leaf)
     input_shape = train_array.shape[1:]    
     num_classes = 2
     model = cnn_function(input_shape, 2)
     model.summary()
 else:
-    train_array = melspect_array(train_data, var_leaf)
-    test_array = melspect_array(test_data, var_leaf)
+    train_array = input_array(train_data, var_leaf)
+    test_array = input_array(test_data, var_leaf)
     train_array = np.repeat(train_array, 3, axis=-1)
     test_array = np.repeat(test_array, 3, axis=-1)
     input_shape = train_array.shape[1:]
@@ -163,7 +169,7 @@ scheduler = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
 checkpointer = callbacks.ModelCheckpoint(filepath = dataset_folder_final + '/e_cnn_leaf.hdf5',
                                          verbose=1, save_best_only=True)
 #---------------------------------  Training -----------------------------------
-print('================= Training will start with {KFOLD}-fold cross validation and {EPOCH} epochs ========================')
+print(f'================= Training will start with {KFOLD}-fold cross validation and {EPOCH} epochs ========================')
 data_kfold, model_history = kfold_training(train_array, test_array,
                                            y_train_one_hot, y_test_one_hot,
                                            test_count, model, scheduler,

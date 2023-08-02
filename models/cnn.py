@@ -4,7 +4,7 @@ from keras.models import Sequential
 from tensorflow.keras import regularizers
 from tensorflow.keras.layers import BatchNormalization
                                   
-
+'''
 def cnn_function(input_shape, num_classes):
     model = keras.Sequential([
         keras.layers.Conv2D(32,(3,3),  input_shape= input_shape, kernel_regularizer=regularizers.l2(0.0005)),
@@ -36,4 +36,41 @@ def cnn_function(input_shape, num_classes):
         #keras.layers.Dropout(0.7),
         keras.layers.Dense(num_classes, activation='softmax')])
 
+    return model
+'''
+def cnn_function(input_shape, num_classes):
+
+    model = keras.Sequential([
+        keras.layers.Conv2D(32,(3,3), activation='relu', input_shape= input_shape,
+                            kernel_regularizer=regularizers.l2(0.0001)),
+        BatchNormalization(),
+        #keras.layers.MaxPool2D((2,2),strides=2),
+        
+        keras.layers.Conv2D(64,(3,3),activation='relu',kernel_regularizer=regularizers.l2(0.0001)),
+        BatchNormalization(),
+        keras.layers.Dropout(0.25),
+        #keras.layers.MaxPool2D((2,2),strides=2),
+        
+        keras.layers.Conv2D(128,(3,3), activation='relu', kernel_regularizer=regularizers.l2(0.0001)),
+        BatchNormalization(),
+        keras.layers.MaxPool2D((2,2),strides= 2),
+        
+        
+        keras.layers.Conv2D(128,(3,3), activation='relu', kernel_regularizer=regularizers.l2(0.0001)),
+        BatchNormalization(),
+        keras.layers.MaxPool2D((2,2), strides=2),
+       
+        
+        keras.layers.Conv2D(256,(3,3), activation='relu', kernel_regularizer=regularizers.l2(0.0001)),
+        BatchNormalization(),
+        keras.layers.MaxPool2D((2,2), strides=2),
+        keras.layers.Dropout(0.25),
+       
+        keras.layers.Flatten(),
+        keras.layers.Dropout(0.5),
+        keras.layers.Dense(512, activation='relu'),
+        keras.layers.Dense(128, activation='relu'),
+        keras.layers.Dense(64, activation='relu'),
+        keras.layers.Dropout(0.5),
+        keras.layers.Dense(2, activation='softmax')])
     return model

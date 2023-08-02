@@ -10,7 +10,7 @@ def scale_minmax(melspec):
     minmax_melspec = scaler.fit_transform(flattened_melspec.reshape(-1, 1))
     return minmax_melspec.reshape(melspec.shape)
 
-def audio_to_melspect(input_data):
+def to_melspectrogram(input_data):
     melspect_data = []
     for augmented_sample in input_data:
         audio, filename, label = augmented_sample

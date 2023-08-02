@@ -73,5 +73,5 @@ if __name__ == '__main__':
     folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
     folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
     
-    visualizing_leaf(folder_path_train, "augmented_train.pkl")
- # visualizing_leaf(folder_path_test, "augmented_test.pkl")
+    visualizing_leaf(folder_path_train, "leaf_train_data.pkl")
+ # visualizing_leaf(folder_path_test, "leaf_test_data.pkl")
