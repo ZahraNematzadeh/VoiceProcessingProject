@@ -113,11 +113,11 @@ if var_leaf == False:
            pickle.dump(test_data, file)
 
 else:   
-    train_data  = to_leaf(augmented_train)
-    test_data = to_leaf(augmented_test)
+    #train_data  = to_leaf(augmented_train)
+    #test_data = to_leaf(augmented_test)
     
-    #train_data  = to_custom_leaf(augmented_train)
-    #test_data = to_custom_leaf(augmented_test)
+    train_data  = to_custom_leaf(augmented_train)
+    test_data = to_custom_leaf(augmented_test)
     
     output_file_path_train = os.path.join(dataset_folder_helper, "leaf_train_data.pkl")
     with open(output_file_path_train, "wb") as file:
