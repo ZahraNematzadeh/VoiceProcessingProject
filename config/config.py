@@ -1,5 +1,5 @@
 K_fold = 10
-Epoch = 10
+Epoch = 100
 Batch_size = 64
 
 folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
