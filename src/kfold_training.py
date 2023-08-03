@@ -22,18 +22,18 @@ def kfold_training(melspect_train_array, melspect_test_array,
     kfold = KFold(n_splits = num_k, shuffle=True, random_state=42)
     for train_idx, val_idx in list(kfold.split(melspect_train_array,y_train_one_hot)):
         print("Training on Fold: ",j+1)
-        if var_leaf:
-            train_idx_tensor = tf.convert_to_tensor(train_idx, dtype=tf.int32)
-            val_idx_tensor = tf.convert_to_tensor(val_idx, dtype=tf.int32)
-            x_train_df = tf.gather(melspect_train_array, train_idx_tensor)
-            x_valid_df = tf.gather(melspect_train_array, val_idx_tensor)
-            y_train_fold = tf.gather(y_train_one_hot, train_idx_tensor)
-            y_val_fold = tf.gather(y_train_one_hot, val_idx_tensor)  
-        else:
+        train_idx_tensor = tf.convert_to_tensor(train_idx, dtype=tf.int32)
+        val_idx_tensor = tf.convert_to_tensor(val_idx, dtype=tf.int32)
+        x_train_df = tf.gather(melspect_train_array, train_idx_tensor)
+        x_valid_df = tf.gather(melspect_train_array, val_idx_tensor)
+        y_train_fold = tf.gather(y_train_one_hot, train_idx_tensor)
+        y_val_fold = tf.gather(y_train_one_hot, val_idx_tensor)  
+        '''
             x_train_df = melspect_train_array[train_idx]
             x_valid_df = melspect_train_array[val_idx]
             y_train_fold = y_train_one_hot[train_idx]
             y_val_fold = y_train_one_hot[val_idx]
+        '''
         j+=1
         #---------------------------------------------------------------------------
         train_generator = ImageDataGenerator().flow(x_train_df, y_train_fold, batch_size=BATCH_SIZE, shuffle=True)

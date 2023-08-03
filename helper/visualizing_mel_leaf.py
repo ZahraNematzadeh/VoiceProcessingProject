@@ -82,10 +82,6 @@ def visualizing_melspect_and_leaf(folder_path, mel_filename, leaf_filename):
             leaf_array = np.array(leaf_array)
             if len(leaf_array.shape) > 2:
                 leaf_array = np.squeeze(leaf_array)
-
-            print("Melspectrogram:", mel_filename)
-            print("Leaf:", leaf_filename)
-
             plt.subplot(1, 2, 2)
             plt.pcolormesh(leaf_array)
             plt.colorbar()
