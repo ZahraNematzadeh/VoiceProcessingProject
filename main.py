@@ -51,7 +51,7 @@ if visualizing_selection.lower() == 'm':
 
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
-    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train_leaf, path_test_leaf, var_leaf)
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
     wave_train = decode_wave(path_train)
     wave_test = decode_wave(path_test)
     
@@ -86,7 +86,7 @@ output_file_path_test = os.path.join(dataset_folder_helper, "augmented_test.pkl"
 with open(output_file_path_test, "wb") as file:
        pickle.dump(augmented_test, file)
 #-------------------------------------------------------------------------------      
-from helper.counting_augmented_samples import counting_aug_samples
+from helper.count_augmented_samples import counting_aug_samples
 
 positive_count,negative_count,total_count  = counting_aug_samples(dataset_folder_helper,'augmented_train.pkl')
 print("Number of Positive samples in train:", positive_count)
