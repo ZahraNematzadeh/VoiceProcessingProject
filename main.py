@@ -29,8 +29,8 @@ import pickle
 import numpy as np
 from keras import callbacks
 
-from config.config import (folder_path_train, folder_path_test, folder_path_train_leaf, folder_path_test_leaf,
-                    K_fold, Epoch, Batch_size)
+from config.config import (folder_path_train, folder_path_test, K_fold, 
+                            Epoch, Batch_size)
 
 #-------------------------------------------------------------------------------
 KFOLD = K_fold
@@ -39,14 +39,10 @@ BATCH = Batch_size
 padded_train = []
 padded_test = []
 
-path_train = folder_path_train_leaf
-path_test = folder_path_test_leaf
+path_train = folder_path_train
+path_test = folder_path_test
 
-path_train_leaf = folder_path_train_leaf
-path_test_leaf = folder_path_test_leaf
-
-visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf: ")
-
+visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf:")
 if visualizing_selection.lower() == 'm':
     var_leaf = False
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
@@ -56,8 +52,8 @@ if visualizing_selection.lower() == 'm':
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train_leaf, path_test_leaf, var_leaf)
-    wave_train = decode_wave(path_train_leaf)
-    wave_test = decode_wave(path_test_leaf)
+    wave_train = decode_wave(path_train)
+    wave_test = decode_wave(path_test)
     
 #-------------------------------------------------------------------------------
 
