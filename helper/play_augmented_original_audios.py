@@ -2,7 +2,7 @@
 '''
 from src.make_dataset_folder import make_dataset_folder
 from src.get_dataset_name import get_dataset_name
-from config import (folder_path_test, folder_path_train,
+from config.config import (folder_path_test, folder_path_train,
                      helper_output_path)
 
 
