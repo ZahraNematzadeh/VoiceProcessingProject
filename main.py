@@ -29,7 +29,7 @@ import pickle
 import numpy as np
 from keras import callbacks
 
-from config import (folder_path_train, folder_path_test, folder_path_train_leaf, folder_path_test_leaf,
+from config.config import (folder_path_train, folder_path_test, folder_path_train_leaf, folder_path_test_leaf,
                     K_fold, Epoch, Batch_size)
 
 #-------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ path_train = folder_path_train_leaf
 path_test = folder_path_test_leaf
 
 path_train_leaf = folder_path_train_leaf
-path_test_leaf = folder_path_train_leaf
+path_test_leaf = folder_path_test_leaf
 
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf: ")
 
