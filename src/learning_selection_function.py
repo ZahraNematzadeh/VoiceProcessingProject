@@ -1,6 +1,6 @@
 from src.make_dataset_folder import make_dataset_folder
 from src.get_dataset_name import get_dataset_name
-from config import  helper_output_path, final_output_path, plots_output_path
+from config.config import  helper_output_path, final_output_path, plots_output_path
 
 def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
     
