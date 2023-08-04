@@ -3,6 +3,9 @@ This code visualize the leaf images.
 First run the main code to create the leaf_data.pkl file, 
 then read the pkl file for visualization.
 '''
+import sys
+sys.path.append('/content/VoicePathologyDetection')
+
 from src.make_dataset_folder import make_dataset_folder
 from src.get_dataset_name import get_dataset_name
 from config.config import (folder_path_test, folder_path_train,
@@ -17,7 +20,7 @@ import matplotlib.pyplot as plt
 
 def visualizing_leaf(folder_path, filename):
     
-    dataset_name = get_dataset_name(folder_path, -5)
+    dataset_name = get_dataset_name(folder_path, -4)
     learning_selection = input("Enter 'c' to navigate to CNN folder or 't' for Transfer-Learning: ")
     if learning_selection.lower() == 'c':
         dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name, visualizing='Leaf', learning_name ='CNN')
