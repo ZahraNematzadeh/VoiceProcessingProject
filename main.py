@@ -17,7 +17,7 @@ from src.classification_report import classification_reports
 from src.roc_curve_function import roc_curve_function
 #from src.all_roc_curves import all_roc_curves
 #from src.leaf_representation import leaf_representation
-
+from src.get_informative_chunk import get_informative_chunk
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
@@ -30,18 +30,20 @@ import numpy as np
 from keras import callbacks
 
 from config.config import (folder_path_train, folder_path_test, K_fold, 
-                            Epoch, Batch_size)
+                            Epoch, Batch_size, sample_rate)
 
 #-------------------------------------------------------------------------------
 KFOLD = K_fold
 EPOCH = Epoch
 BATCH = Batch_size
+sr = sample_rate
 padded_train = []
 padded_test = []
 
 path_train = folder_path_train
 path_test = folder_path_test
 
+#------------------------------------------------------------------------------
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf:")
 if visualizing_selection.lower() == 'm':
     var_leaf = False
@@ -53,15 +55,20 @@ elif visualizing_selection.lower() == 'l':
     var_leaf = True
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
     wave_train = decode_wave(path_train)
-    wave_test = decode_wave(path_test)
-    
-#-------------------------------------------------------------------------------
+    wave_test = decode_wave(path_test)    
 
-train_data = wave_train
-test_data = wave_test 
+#------------------------------------------------------------------------------
+visualizing_selection = input("Enter 's' to extract the most informative chunk, or 'w' to work on whole audio:")
+if visualizing_selection.lower() == 's':
+    train_data  = get_informative_chunk(wave_train, sr, var_leaf)
+    print('==================== Most Informative chunks have been generated for TRAINING set successfully =====================')
+    test_data = get_informative_chunk(wave_test, sr, var_leaf)
+    print('==================== Most Informative chunks have been generated for TEST set successfully =====================')
 
-#-------------------------------------------------------------------------------
-
+elif visualizing_selection.lower() == 'w':
+    train_data = wave_train
+    test_data = wave_test 
+#------------------------------------------------------------------------------
 balanced_train_data = oversample_positive_class(train_data, folder_name="Train")
 balanced_test_data = oversample_positive_class(test_data, folder_name="Test")
 
