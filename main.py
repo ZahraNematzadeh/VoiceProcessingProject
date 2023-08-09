@@ -55,19 +55,18 @@ elif visualizing_selection.lower() == 'l':
     var_leaf = True
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
     wave_train = decode_wave(path_train)
-    wave_test = decode_wave(path_test)    
-
+    wave_test = decode_wave(path_test)  
 #------------------------------------------------------------------------------
 visualizing_selection = input("Enter 's' to extract the most informative chunk, or 'w' to work on whole audio:")
 if visualizing_selection.lower() == 's':
-    train_data  = get_informative_chunk(wave_train, sr, var_leaf)
-    print('==================== Most Informative chunks have been generated for TRAINING set successfully =====================')
-    test_data = get_informative_chunk(wave_test, sr, var_leaf)
-    print('==================== Most Informative chunks have been generated for TEST set successfully =====================')
-
+    var_chunk = True
 elif visualizing_selection.lower() == 'w':
-    train_data = wave_train
-    test_data = wave_test 
+    var_chunk = False
+      
+#------------------------------------------------------------------------------
+train_data = wave_train
+test_data = wave_test 
+
 #------------------------------------------------------------------------------
 balanced_train_data = oversample_positive_class(train_data, folder_name="Train")
 balanced_test_data = oversample_positive_class(test_data, folder_name="Test")
@@ -79,10 +78,20 @@ with open(output_file_path_train, "wb") as file:
 output_file_path_test = os.path.join(dataset_folder_helper, "balanced_test_data.pkl")       
 with open(output_file_path_test, "wb") as file:
        pickle.dump(balanced_test_data, file)
-
-#-------------------------------------------------------------------------------
-augmented_train = augmentation(balanced_train_data, var_leaf)
-augmented_test = augmentation(balanced_test_data, var_leaf)
+#------------------------------------------------------------------------------
+if var_chunk:
+    train_chunk  = get_informative_chunk(balanced_train_data, sr, var_leaf)
+    final_train = train_chunk
+    print('====== Most Informative chunks have been generated for TRAINING set successfully =========')
+    test_chunk = get_informative_chunk(balanced_test_data, sr, var_leaf)
+    final_test = test_chunk
+    print('====== Most Informative chunks have been generated for TEST set successfully ========') 
+else:
+    final_train = balanced_train_data
+    final_test = balanced_test_data
+#------------------------------------------------------------------------------
+augmented_train = augmentation(final_train, var_leaf)
+augmented_test = augmentation(final_test, var_leaf)
 print('==================== Audios have been augmented successfully =====================')
 
 output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")
@@ -157,14 +166,12 @@ else:
     if var_resnet:
         model = resnet50(input_shape)          #input_shape = (128,431,1)
         model.summary()                        #leaf_input_shape = (40,100,1)
-    elif var_inception:
+    elif var_inception:                        #input_shape = (128,87,1) (chunk)
         model = inceptionv3(input_shape)
         model.summary()
     elif var_xception:
         model = xception(input_shape)
-        model.summary()
-    
-      
+        model.summary()    
 #-------------------------------------------------------------------------------
 #earlystopping = callbacks.EarlyStopping(monitor = "val_loss", mode= "min",
                                         #patience= 10, restore_best_weights= True)
