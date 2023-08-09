@@ -18,6 +18,7 @@ from src.roc_curve_function import roc_curve_function
 #from src.all_roc_curves import all_roc_curves
 #from src.leaf_representation import leaf_representation
 from src.get_informative_chunk import get_informative_chunk
+from src.get_avg_amp import get_avg_amp
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
@@ -80,10 +81,12 @@ with open(output_file_path_test, "wb") as file:
        pickle.dump(balanced_test_data, file)
 #------------------------------------------------------------------------------
 if var_chunk:
-    train_chunk  = get_informative_chunk(balanced_train_data, sr, var_leaf)
+    #train_chunk  = get_informative_chunk(balanced_train_data, sr, var_leaf)
+    train_chunk  = get_avg_amp(balanced_train_data, sr, var_leaf)
     final_train = train_chunk
     print('====== Most Informative chunks have been generated for TRAINING set successfully =========')
-    test_chunk = get_informative_chunk(balanced_test_data, sr, var_leaf)
+    #test_chunk = get_informative_chunk(balanced_test_data, sr, var_leaf)
+    test_chunk  = get_avg_amp(balanced_test_data, sr, var_leaf)
     final_test = test_chunk
     print('====== Most Informative chunks have been generated for TEST set successfully ========') 
 else:
