@@ -258,7 +258,7 @@ def noise_removal(input_audio, all_noise_clips):
    
         final_output.append((output, filename, label))
    
-    return output
+    return final_output
 
 
 
