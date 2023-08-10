@@ -19,6 +19,8 @@ from src.roc_curve_function import roc_curve_function
 #from src.leaf_representation import leaf_representation
 from src.get_informative_chunk import get_informative_chunk
 from src.get_avg_amp import get_avg_amp
+from src.noise_profiling import noise_preparing, find_matching_noise, noise_removal
+
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
@@ -58,7 +60,7 @@ elif visualizing_selection.lower() == 'l':
     wave_train = decode_wave(path_train)
     wave_test = decode_wave(path_test)  
 #------------------------------------------------------------------------------
-visualizing_selection = input("Enter 's' to extract the most informative chunk, or 'w' to work on whole audio:")
+visualizing_selection = input("Enter 's' to reduce noise, or 'w' to work on whole audio:")
 if visualizing_selection.lower() == 's':
     var_chunk = True
 elif visualizing_selection.lower() == 'w':
@@ -82,13 +84,20 @@ with open(output_file_path_test, "wb") as file:
 #------------------------------------------------------------------------------
 if var_chunk:
     #train_chunk  = get_informative_chunk(balanced_train_data, sr, var_leaf)
-    train_chunk  = get_avg_amp(balanced_train_data, sr, var_leaf)
+    #train_chunk  = get_avg_amp(balanced_train_data, sr, var_leaf)
+    noise_clips = noise_preparing(path_train, var_train=True, var_test=False)
+    train_chunk = noise_removal(balanced_train_data, noise_clips)
+    
     final_train = train_chunk
-    print('====== Most Informative chunks have been generated for TRAINING set successfully =========')
+    print('====== Noise have been removed from TRAINING set successfully =========')
+    
     #test_chunk = get_informative_chunk(balanced_test_data, sr, var_leaf)
-    test_chunk  = get_avg_amp(balanced_test_data, sr, var_leaf)
+    #test_chunk  = get_avg_amp(balanced_test_data, sr, var_leaf)
+    noise_clips = noise_preparing(path_test, var_train= False, var_test=True)
+    test_chunk = noise_removal(balanced_test_data, noise_clips) 
+    
     final_test = test_chunk
-    print('====== Most Informative chunks have been generated for TEST set successfully ========') 
+    print('====== Noise have been removed from TEST set successfully ========') 
 else:
     final_train = balanced_train_data
     final_test = balanced_test_data
