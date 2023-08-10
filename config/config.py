@@ -6,22 +6,23 @@ Batch_size = 64
 sample_rate = 44100
 
 #---------------------------------- GDrive -------------------------------------
-'''
-folder_path_train= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass_wav/train'
-folder_path_test= '/content/drive/My Drive/Dataset/e/ClusteredData/big_mass_wav/val'
+
+folder_path_train= '/content/drive/My Drive/Dataset/e/test_train/ClusteredData/big_mass_wav/train'
+folder_path_test= '/content/drive/My Drive/Dataset/e/test_train/ClusteredData/big_mass_wav/val'
 
 helper_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/HelpersOutputs'
 final_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/FinalOutputs'
 plots_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/Plots'
-''' 
+
 #-------------------------------- my local path -------------------------------
+'''
 folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
 folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
 
 helper_output_path = 'C:/Users/zahra/VoiceColab/outputs/HelpersOutputs'
 final_output_path = 'C:/Users/zahra/VoiceColab/outputs/FinalOutputs'
 plots_output_path = 'C:/Users/zahra/VoiceColab/outputs/Plots'
-
+'''
 if not os.path.exists(helper_output_path):
         os.makedirs(helper_output_path)
 
