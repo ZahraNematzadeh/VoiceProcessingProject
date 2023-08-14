@@ -1,8 +1,9 @@
 import librosa
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from config.config import sample_rate
 
-sample_rate = 44100
+sample_rate = sample_rate
 def scale_minmax(melspec):
     scaler = MinMaxScaler()
     melspec = np.asarray(melspec,dtype=np.float32)

@@ -2,13 +2,14 @@ import os
 import random
 import nlpaug.augmenter.audio as naa
 from audiomentations import AddGaussianNoise
+from config.config import sample_rate
 
 
 def augmentation(balanced_data, var_leaf):
     if var_leaf:
         sample_rate = 16000
     else:
-        sample_rate = 44100
+        sample_rate = sample_rate
         
     augmented_samples = []
     aug_tech = [ naa.LoudnessAug(zone = (0,1)),
@@ -27,7 +28,7 @@ def augmentation(balanced_data, var_leaf):
             if var_leaf:
                 if isinstance(aug_technique, naa.NoiseAug):
                     transform = AddGaussianNoise(min_amplitude=0.001, max_amplitude=0.015,p=1.0)
-                    augmented_audio = transform(audio, sample_rate = 16000)
+                    augmented_audio = transform(audio, sample_rate = sample_rate)
                     augmented_samples.append((augmented_audio, filename, label))
 
                 else:

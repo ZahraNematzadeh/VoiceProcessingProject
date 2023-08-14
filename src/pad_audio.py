@@ -21,7 +21,8 @@ def pad_audio(folder_path, padded_list):
             if filename.endswith('.wav'):
                 file_path = os.path.join(root, filename)
                 y, sr = librosa.load(file_path, sr=None, mono=True)
-                padded_audio = padding_audio(y, 5, 44100)
+                audio_resampled = librosa.resample(y,orig_sr= 44100, target_sr=48000)
+                padded_audio = padding_audio(audio_resampled , 5, 48000)
                 label = os.path.basename(root)
                 padded_list.append((padded_audio, filename, label))
 

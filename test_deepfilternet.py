@@ -57,8 +57,8 @@ visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --o
 if visualizing_selection.lower() == 'm':
     var_leaf = False
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
-    wave_train = pad_audio(enhanced_train, sr=48000, max_duration = 5)
-    wave_test = pad_audio(enhanced_test, sr=48000, max_duration = 5)
+    wave_train = pad_audio(enhanced_train, sr=48000, max_duration = 3)
+    wave_test = pad_audio(enhanced_test, sr=48000, max_duration = 3)
 
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
@@ -81,13 +81,13 @@ test_data = wave_test
 balanced_train_data = oversample_positive_class(train_data, folder_name="Train")
 balanced_test_data = oversample_positive_class(test_data, folder_name="Test")
 
-output_file_path_train = os.path.join(dataset_folder_helper, "balanced_train_data.pkl")
-with open(output_file_path_train, "wb") as file:
-       pickle.dump(balanced_train_data, file)
+#output_file_path_train = os.path.join(dataset_folder_helper, "balanced_train_data.pkl")
+#with open(output_file_path_train, "wb") as file:
+   #    pickle.dump(balanced_train_data, file)
 
-output_file_path_test = os.path.join(dataset_folder_helper, "balanced_test_data.pkl")       
-with open(output_file_path_test, "wb") as file:
-       pickle.dump(balanced_test_data, file)
+#output_file_path_test = os.path.join(dataset_folder_helper, "balanced_test_data.pkl")       
+#with open(output_file_path_test, "wb") as file:
+    #   pickle.dump(balanced_test_data, file)
 #------------------------------------------------------------------------------
 '''
 if var_chunk:
@@ -115,13 +115,13 @@ augmented_train = augmentation(balanced_train_data, var_leaf)
 augmented_test = augmentation(balanced_test_data, var_leaf)
 print('==================== Audios have been augmented successfully =====================')
 
-output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")
-with open(output_file_path_train, "wb") as file:
-       pickle.dump(augmented_train, file)
+#output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")
+#with open(output_file_path_train, "wb") as file:
+    #   pickle.dump(augmented_train, file)
 
-output_file_path_test = os.path.join(dataset_folder_helper, "augmented_test.pkl")       
-with open(output_file_path_test, "wb") as file:
-       pickle.dump(augmented_test, file)
+#output_file_path_test = os.path.join(dataset_folder_helper, "augmented_test.pkl")       
+#with open(output_file_path_test, "wb") as file:
+   #    pickle.dump(augmented_test, file)
 #-------------------------------------------------------------------------------      
 from helper.count_augmented_samples import counting_aug_samples
 

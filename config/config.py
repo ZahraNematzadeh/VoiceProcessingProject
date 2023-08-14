@@ -3,7 +3,7 @@ import os
 K_fold = 10
 Epoch = 100
 Batch_size = 64
-sample_rate = 44100
+sample_rate = 48000
 
 #---------------------------------- GDrive -------------------------------------
 '''

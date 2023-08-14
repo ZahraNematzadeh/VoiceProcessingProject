@@ -1,4 +1,5 @@
 import gc
+import librosa
 import numpy as np
 
 #%%
@@ -11,6 +12,8 @@ def pad_audio(audio, sr, max_duration):
       label = data[2]
       
       signal_np = signal.numpy()
+      signal_np = librosa.resample(signal_np,  orig_sr= 44100, target_sr=48000)
+      
       len_signal_np = signal_np.shape[1]
       num_expected_samples = int(sr * max_duration)
       
