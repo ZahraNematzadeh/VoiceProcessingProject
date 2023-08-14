@@ -60,12 +60,13 @@ elif visualizing_selection.lower() == 'l':
     wave_train = decode_wave(path_train)
     wave_test = decode_wave(path_test)  
 #------------------------------------------------------------------------------
+'''
 visualizing_selection = input("Enter 's' to reduce noise, or 'w' to work on whole audio:")
 if visualizing_selection.lower() == 's':
     var_chunk = True
 elif visualizing_selection.lower() == 'w':
     var_chunk = False
-      
+'''     
 #------------------------------------------------------------------------------
 train_data = wave_train
 test_data = wave_test 
@@ -82,6 +83,7 @@ output_file_path_test = os.path.join(dataset_folder_helper, "balanced_test_data.
 with open(output_file_path_test, "wb") as file:
        pickle.dump(balanced_test_data, file)
 #------------------------------------------------------------------------------
+'''
 if var_chunk:
     #train_chunk  = get_informative_chunk(balanced_train_data, sr, var_leaf)
     #train_chunk  = get_avg_amp(balanced_train_data, sr, var_leaf)
@@ -101,9 +103,10 @@ if var_chunk:
 else:
     final_train = balanced_train_data
     final_test = balanced_test_data
+'''
 #------------------------------------------------------------------------------
-augmented_train = augmentation(final_train, var_leaf)
-augmented_test = augmentation(final_test, var_leaf)
+augmented_train = augmentation(balanced_train_data, var_leaf)
+augmented_test = augmentation(balanced_test_data, var_leaf)
 print('==================== Audios have been augmented successfully =====================')
 
 output_file_path_train = os.path.join(dataset_folder_helper, "augmented_train.pkl")

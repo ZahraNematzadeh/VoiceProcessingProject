@@ -1,4 +1,4 @@
-from tests.test_pad import pad_audio
+from src.test_pad import pad_audio
 from src.learning_selection_function import learning_selection_function
 from src.oversampling_mass import oversample_positive_class
 from src.augmentation import augmentation
