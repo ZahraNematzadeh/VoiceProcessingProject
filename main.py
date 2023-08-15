@@ -20,53 +20,57 @@ from src.roc_curve_function import roc_curve_function
 from src.get_informative_chunk import get_informative_chunk
 from src.get_avg_amp import get_avg_amp
 from src.noise_profiling import noise_preparing, find_matching_noise, noise_removal
-
+from src.audoai_noise_removal import audoai_noise_removal
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
 from models.xception import xception
 
+from config.config import (folder_path_train, folder_path_test, K_fold, 
+                            Epoch, Batch_size, sample_rate, max_duration)
+
 import os
 import pickle
 import numpy as np
 from keras import callbacks
-
-from config.config import (folder_path_train, folder_path_test, K_fold, 
-                            Epoch, Batch_size, sample_rate)
 
 #-------------------------------------------------------------------------------
 KFOLD = K_fold
 EPOCH = Epoch
 BATCH = Batch_size
 sr = sample_rate
-padded_train = []
-padded_test = []
-
+max_duration = max_duration
 path_train = folder_path_train
 path_test = folder_path_test
 
+
+
+#------------------------------------------------------------------------------
+visualizing_selection = input("Enter 's' to reduce noise, or 'w' to work on whole audio:")
+if visualizing_selection.lower() == 's':
+    var_noise = True
+    cleaned_train = audoai_noise_removal(path_train)
+    cleaned_test = audoai_noise_removal(path_test)
+    train_audio = cleaned_train
+    test_audio = cleaned_test
+elif visualizing_selection.lower() == 'w':
+    var_noise = False  
+    train_audio = folder_path_train
+    test_audio = folder_path_test
 #------------------------------------------------------------------------------
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf:")
 if visualizing_selection.lower() == 'm':
     var_leaf = False
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
-    wave_train = pad_audio(path_train, padded_train)
-    wave_test = pad_audio(path_test, padded_test)
+    wave_train = pad_audio(train_audio, var_noise, sample_rate, max_duration = max_duration )
+    wave_test = pad_audio(test_audio, var_noise, sample_rate, max_duration = max_duration)
 
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
     wave_train = decode_wave(path_train)
     wave_test = decode_wave(path_test)  
-#------------------------------------------------------------------------------
-'''
-visualizing_selection = input("Enter 's' to reduce noise, or 'w' to work on whole audio:")
-if visualizing_selection.lower() == 's':
-    var_chunk = True
-elif visualizing_selection.lower() == 'w':
-    var_chunk = False
-'''     
 #------------------------------------------------------------------------------
 train_data = wave_train
 test_data = wave_test 
