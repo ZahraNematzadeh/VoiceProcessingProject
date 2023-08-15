@@ -5,28 +5,11 @@ from config.config import (sample_rate, max_duration)
 
 
 #%%
-def pad_audio(audio, var_noise, sr, max_duration):
+def pad_audio(folder_path, sr, max_duration):
     padded_list = []
     num_expected_samples = int(sr * max_duration)
-   
-    if var_noise:
-        for data in audio:
-          signal = data[0]
-          filename = data[1]
-          label = data[2]
-          signal_np = np.array(signal)      
-          len_signal_np = signal_np.shape[0]
-          if len_signal_np < num_expected_samples:
-              num_missing_items = (num_expected_samples - len_signal_np)
-              padded_signal = np.pad(signal_np, (0, num_missing_items), mode="constant")  
-          elif len_signal_np > num_expected_samples:
-               padded_signal = signal_np[:num_expected_samples]
-          else:
-              padded_signal = signal_np 
-          padded_list.append((padded_signal, filename, label))
-    else:       
-        folder_path = audio
-        for root, dirs, files in os.walk(folder_path):
+        
+    for root, dirs, files in os.walk(folder_path):
             for filename in files:
                 if filename.endswith('.wav'):
                     file_path = os.path.join(root, filename)

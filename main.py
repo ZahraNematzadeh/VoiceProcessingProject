@@ -20,7 +20,6 @@ from src.roc_curve_function import roc_curve_function
 from src.get_informative_chunk import get_informative_chunk
 from src.get_avg_amp import get_avg_amp
 from src.noise_profiling import noise_preparing, find_matching_noise, noise_removal
-from src.audoai_noise_removal import audoai_noise_removal
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
@@ -44,27 +43,22 @@ max_duration = max_duration
 path_train = folder_path_train
 path_test = folder_path_test
 
-
-
 #------------------------------------------------------------------------------
+'''
 visualizing_selection = input("Enter 's' to reduce noise, or 'w' to work on whole audio:")
 if visualizing_selection.lower() == 's':
-    var_noise = True
-    cleaned_train = audoai_noise_removal(path_train)
-    cleaned_test = audoai_noise_removal(path_test)
-    train_audio = cleaned_train
-    test_audio = cleaned_test
+    var_chunk = True
+    
 elif visualizing_selection.lower() == 'w':
-    var_noise = False  
-    train_audio = folder_path_train
-    test_audio = folder_path_test
+    var_chunk = False  
+ '''  
 #------------------------------------------------------------------------------
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf:")
 if visualizing_selection.lower() == 'm':
     var_leaf = False
     dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
-    wave_train = pad_audio(train_audio, var_noise, sample_rate, max_duration = max_duration )
-    wave_test = pad_audio(test_audio, var_noise, sample_rate, max_duration = max_duration)
+    wave_train = pad_audio(path_train, sample_rate, max_duration = max_duration )
+    wave_test = pad_audio(path_test, sample_rate, max_duration = max_duration)
 
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
@@ -74,7 +68,7 @@ elif visualizing_selection.lower() == 'l':
 #------------------------------------------------------------------------------
 train_data = wave_train
 test_data = wave_test 
-
+print(sr)
 #------------------------------------------------------------------------------
 balanced_train_data = oversample_positive_class(train_data, folder_name="Train")
 balanced_test_data = oversample_positive_class(test_data, folder_name="Test")

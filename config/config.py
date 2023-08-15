@@ -3,7 +3,7 @@ import os
 K_fold = 10
 Epoch = 100
 Batch_size = 64
-sample_rate = 48000
+sample_rate = 44100
 max_duration = 5
 
 #---------------------------------- GDrive -------------------------------------
@@ -17,8 +17,8 @@ plots_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/Plo
 '''
 #-------------------------------- my local path -------------------------------
 
-folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
-folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
+folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav_audoai/train'
+folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav_audoai/val'
 
 helper_output_path = 'C:/Users/zahra/VoiceColab/outputs/HelpersOutputs'
 final_output_path = 'C:/Users/zahra/VoiceColab/outputs/FinalOutputs'
