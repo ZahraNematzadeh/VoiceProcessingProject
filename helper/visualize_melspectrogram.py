@@ -7,7 +7,7 @@ then read the pkl file for visualization.
 from src.make_dataset_folder import make_dataset_folder
 from src.get_dataset_name import get_dataset_name
 from config.config import (folder_path_test, folder_path_train,
-                     helper_output_path, plots_output_path)
+                     helper_output_path, plots_output_path, sample_rate)
 
 import os
 import pickle
@@ -78,7 +78,7 @@ def visualizing_melspect(folder_path, filename):
   
 if __name__ == '__main__':
     
-    sample_rate = 44100
+    sample_rate = sample_rate
     folder_path_train = folder_path_train
     folder_path_test = folder_path_test
     

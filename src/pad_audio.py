@@ -35,8 +35,8 @@ if __name__=='__main__':
     folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/train'
     folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/e/test_train/ClusteredData/big_mass_wav/val'
 
-    padded_train_1 = pad_audio(folder_path_train, False, sample_rate, max_duration)
-    padded_test_1 = pad_audio(folder_path_test, False,  sample_rate, max_duration)
+    padded_train_1 = pad_audio(folder_path_train, sample_rate, max_duration)
+    padded_test_1 = pad_audio(folder_path_test, sample_rate, max_duration)
     
     #Inspecting padded audios
     for item in padded_train_1:    #or padded_test
