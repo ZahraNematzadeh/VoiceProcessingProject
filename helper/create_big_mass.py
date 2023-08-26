@@ -7,9 +7,9 @@ import os
 import shutil
 import pandas as pd
 
-data = pd.read_csv('C:/Users/zahra/VoiceColab - Copy/dataset/metadata/data.csv', usecols=['MRN', 'Diagnosis', 'Type_of_Mass'])
-positive_folder = 'C:/Users/zahra/Desktop/FarzanehFiles/DataFolders/Wav_format/SplittedData/1_e/Positive'
-output_folder = 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/Positive'
+data = pd.read_csv('C:/Users/zahra/VoiceColab/dataset/metadata/data.csv', usecols=['MRN', 'Diagnosis', 'Type_of_Mass'])
+positive_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/sissy/Positive'
+output_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/ClusteredData/big_mass/Positive'
 
 if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -30,15 +30,16 @@ for filename in os.listdir(positive_folder):
         mrn = filename.split(".")[0]
         first_dash_index = mrn.find('-')
         desired_substring = mrn[first_dash_index + 1:]
-        if desired_substring in mrns:
+        #if desired_substring in mrns:
+        if mrn in mrns:
             output_path = os.path.join(output_folder, filename)
             shutil.copyfile(file_path, output_path)
             counter += 1
 print(f"Total samples copied: {counter}")
 #================================================================
 #================= Preparing and copying Negative folder=========
-negative_folder = 'C:/Users/zahra/Desktop/FarzanehFiles/DataFolders/Wav_format/SplittedData/1_e/Negative'
-neg_output_folder = 'C:/Users/zahra/VoiceColab - Copy/dataset/e/test_train/ClusteredData/big_mass_wav/Negative'
+negative_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/sissy/Negative'
+neg_output_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/ClusteredData/big_mass/Negative'
 count_reinke = 0
 
 if not os.path.exists(neg_output_folder):
@@ -62,7 +63,8 @@ for filename in os.listdir(positive_folder):
         mrn = filename.split(".")[0]
         first_dash_index = mrn.find('-')
         desired_substring = mrn[first_dash_index + 1:]
-        if desired_substring in new_other_set:
+        #if desired_substring in new_other_set:
+        if mrn in new_other_set:
             output_path = os.path.join(neg_output_folder, filename)
             shutil.copyfile(file_path, output_path)
             count_reinke += 1
@@ -72,7 +74,7 @@ print(f"Total samples copied: {total_files_copied}")
 #===================================================================
 #finding Reinke Edema in Diagnosis2 when type_of_mass is null and adding it to negative folder        
 
-data2 = pd.read_csv('C:/Users/zahra/VoiceColab - Copy/dataset/metadata/data.csv', usecols=['MRN', 'Diagnosis', 'Diagnosis2','Type_of_Mass'])
+data2 = pd.read_csv('C:/Users/zahra/VoiceColab/dataset/metadata/data.csv', usecols=['MRN', 'Diagnosis', 'Diagnosis2','Type_of_Mass'])
 new_other_2 = data2[(data2['Type_of_Mass'].isnull()) & (data2['Diagnosis2'] == "Reinke's Edema")].copy()        
 new_other_set2 = set(new_other_2['MRN'])
 count_reinke = 0
@@ -83,7 +85,8 @@ for filename in os.listdir(positive_folder):
         mrn = filename.split(".")[0]
         first_dash_index = mrn.find('-')
         desired_substring = mrn[first_dash_index + 1:]
-        if desired_substring in new_other_set2:
+        #if desired_substring in new_other_set2:
+        if mrn in new_other_set2:
             output_path = os.path.join(neg_output_folder, filename)
             shutil.copyfile(file_path, output_path)
             count_reinke += 1
