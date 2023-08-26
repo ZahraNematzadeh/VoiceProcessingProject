@@ -30,7 +30,7 @@ def confusion_mat(true_labels, predicted_labels, dataset_folder_plots):
     if mappable is not None:
         #plt.colorbar(mappable)
         colorbar = plt.colorbar(mappable, pad=0.03)
-        colorbar.ax.tick_params(labelsize=14)
+        colorbar.ax.tick_params(labelsize=16)
         
     plt.xlabel('Predicted Labels')
     plt.ylabel('True Labels')
