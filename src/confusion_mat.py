@@ -19,7 +19,7 @@ def confusion_mat(true_labels, predicted_labels, dataset_folder_plots):
     for i in range(num_classes):
         for j in range(num_classes):
             plt.text(j, i, confusion_mat[i, j], ha='center', va='center',
-                     color='black', fontsize=12)
+                     color='black', fontsize=18)
 
     mappable = None
     for child in ax.get_children():
@@ -30,7 +30,7 @@ def confusion_mat(true_labels, predicted_labels, dataset_folder_plots):
     if mappable is not None:
         #plt.colorbar(mappable)
         colorbar = plt.colorbar(mappable, pad=0.03)
-        colorbar.ax.tick_params(labelsize=10)
+        colorbar.ax.tick_params(labelsize=14)
         
     plt.xlabel('Predicted Labels')
     plt.ylabel('True Labels')
