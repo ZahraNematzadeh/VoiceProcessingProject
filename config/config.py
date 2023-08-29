@@ -3,13 +3,13 @@ import os
 K_fold = 10
 Epoch = 100
 Batch_size = 64
-sample_rate = 48000
+sample_rate = 44100
 max_duration = 5
 
 #---------------------------------- GDrive -------------------------------------
 
-folder_path_train= '/content/drive/My Drive/Dataset/e/test_train/ClusteredData/big_mass_wav_deepfilternet/train'
-folder_path_test= '/content/drive/My Drive/Dataset/e/test_train/ClusteredData/big_mass_wav_deepfilternet/val'
+folder_path_train= '/content/drive/My Drive/Dataset/oh/test_train/ClusteredData/big_mass/train'
+folder_path_test= '/content/drive/My Drive/Dataset/oh/test_train/ClusteredData/big_mass/val'
 
 helper_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/HelpersOutputs'
 final_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/FinalOutputs'

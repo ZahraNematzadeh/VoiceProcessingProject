@@ -196,7 +196,7 @@ else:
 scheduler = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1,
                                         patience=5, min_lr=1e-8, verbose=1)
 
-checkpointer = callbacks.ModelCheckpoint(filepath = dataset_folder_final + '/e_model' + name + '.hdf5',
+checkpointer = callbacks.ModelCheckpoint(filepath = dataset_folder_final + '/'+ dataset_name + '_model_' + name + '.hdf5',
                                          verbose=1, save_best_only=True)
 #---------------------------------  Training -----------------------------------
 print(f'================= Training will start with {KFOLD}-fold cross validation and {EPOCH} epochs ========================')
@@ -206,17 +206,17 @@ data_kfold, model_history = kfold_training(train_array, test_array,
                                            checkpointer, k_fold = KFOLD,
                                            Batch_size= BATCH, num_epochs = EPOCH, var_leaf= var_leaf)
 # -------------------------------- saving models -------------------------------
-with open(dataset_folder_final+'/modelhistory_e'+ name + '.pkl', 'wb') as f:            # Save model_history
+with open(dataset_folder_final+'/modelhistory_'+ dataset_name + name + '.pkl', 'wb') as f:            # Save model_history
     pickle.dump(model_history, f)
     
-with open(dataset_folder_final+ '/data_kfold_e'+ name + '.pkl', 'wb') as f:
+with open(dataset_folder_final+ '/data_kfold_'+ dataset_name + name + '.pkl', 'wb') as f:
     pickle.dump(data_kfold, f)                                                               # Save data_kfold for prediction
 
 #------------------------------- Loading models --------------------------------
-with open(dataset_folder_final + '/modelhistory_e'+ name + '.pkl', 'rb') as f:                                      # Load model_history
+with open(dataset_folder_final + '/modelhistory_'+ dataset_name + name + '.pkl', 'rb') as f:                                      # Load model_history
     loaded_model_history = pickle.load(f)
     
-with open(dataset_folder_final + '/data_kfold_e'+ name + '.pkl', 'rb') as f:                                        # Load data_kfold for prediction
+with open(dataset_folder_final + '/data_kfold_'+ dataset_name + name + '.pkl', 'rb') as f:                                        # Load data_kfold for prediction
     data_kfold = pickle.load(f)
 #---------------------------- Plotting learning curves -------------------------
 plot_each_fold(model_history, dataset_folder_plots)
@@ -226,8 +226,8 @@ plot_avg_fold(model_history, dataset_folder_plots)
 predicted_labels = label_prediction(data_kfold)
 true_labels = y_test_encoded
 
-np.save(dataset_folder_final+'/predicted_labels_e'+ name + '.npy', np.array(predicted_labels))
-np.save(dataset_folder_final+'/true_labels_bigmass_e'+ name + '.npy', np.array(true_labels))
+np.save(dataset_folder_final+'/predicted_labels_'+ dataset_name + name + '.npy', np.array(predicted_labels))
+np.save(dataset_folder_final+'/true_labels_bigmass_'+ dataset_name + name + '.npy', np.array(true_labels))
 
 #-------------------------------------------------------------------------------
 confusion_mat(true_labels, predicted_labels, dataset_folder_plots)
