@@ -1,6 +1,6 @@
 import os 
 
-def make_dataset_folder(folder_path, dataset_name, visualizing, learning_name):
+def make_dataset_folder(folder_path, dataset_name, mass_name, visualizing, learning_name):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     
@@ -8,7 +8,12 @@ def make_dataset_folder(folder_path, dataset_name, visualizing, learning_name):
     if not os.path.exists(dataset_folder):
         os.makedirs(dataset_folder)
         
-    visualizing_folder = os.path.join(dataset_folder, visualizing)
+    dataset_folder2 = os.path.join(dataset_folder, mass_name)
+    if not os.path.exists(dataset_folder2):
+        os.makedirs(dataset_folder2)
+        
+        
+    visualizing_folder = os.path.join(dataset_folder2, visualizing)
     if not os.path.exists(visualizing_folder):
         os.makedirs(visualizing_folder)
     
