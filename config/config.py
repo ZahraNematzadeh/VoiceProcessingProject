@@ -8,8 +8,8 @@ max_duration = 5
 
 #---------------------------------- GDrive -------------------------------------
 
-folder_path_train= '/content/drive/My Drive/Dataset/apples/test_train/ClusteredData/medium_mass/train'
-folder_path_test= '/content/drive/My Drive/Dataset/apples/test_train/ClusteredData/medium_mass/val'
+folder_path_train= '/content/drive/My Drive/Dataset/e/test_train/ClusteredData/medium_mass/train'
+folder_path_test= '/content/drive/My Drive/Dataset/e/test_train/ClusteredData/medium_mass/val'
 
 helper_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/HelpersOutputs'
 final_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/FinalOutputs'
