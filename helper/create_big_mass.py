@@ -8,8 +8,8 @@ import shutil
 import pandas as pd
 
 data = pd.read_csv('C:/Users/zahra/VoiceColab/dataset/metadata/data.csv', usecols=['MRN', 'Diagnosis', 'Type_of_Mass'])
-positive_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/sissy/Positive'
-output_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/ClusteredData/big_mass/Positive'
+positive_folder = 'C:/Users/zahra/VoiceColab/dataset/1_e/ConcatenatedAudio/labeled_audio_concat/Positive'
+output_folder = 'C:/Users/zahra/VoiceColab/dataset/1_e/ConcatenatedAudio/ClusteredData/big_mass/Positive'
 
 if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -38,8 +38,8 @@ for filename in os.listdir(positive_folder):
 print(f"Total samples copied: {counter}")
 #================================================================
 #================= Preparing and copying Negative folder=========
-negative_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/sissy/Negative'
-neg_output_folder = 'C:/Users/zahra/VoiceColab/dataset/8_sissy/test_train/ClusteredData/big_mass/Negative'
+negative_folder = 'C:/Users/zahra/VoiceColab/dataset/1_e/ConcatenatedAudio/labeled_audio_concat/Negative'
+neg_output_folder = 'C:/Users/zahra/VoiceColab/dataset/1_e/ConcatenatedAudio/ClusteredData/big_mass/Negative'
 count_reinke = 0
 
 if not os.path.exists(neg_output_folder):

@@ -41,8 +41,8 @@ def datalabeling(FolderPath, VoicePath):
             
 if __name__ == '__main__':         
             
-    VoicePath= 'C:/Users/zahra/VoiceColab/dataset/RawDataGCloud/7_ConnectedSpeechPuppy'
-    FolderPath= 'C:/Users/zahra/VoiceColab/dataset/Puppy/test_train/Puppy'
+    VoicePath= 'C:/Users/zahra/VoiceColab/dataset/1_e/ConcatenatedAudio/concatenated_audio'
+    FolderPath= 'C:/Users/zahra/VoiceColab/dataset/1_e/ConcatenatedAudio/labeled_audio_concat'
  
     datalabeling(FolderPath, VoicePath)            
             
