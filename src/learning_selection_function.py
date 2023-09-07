@@ -21,7 +21,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
         if learning_selection.lower() == 'c':
             
             dataset_name = get_dataset_name(folder_path_train, -5)
-            mass_name = get_dataset_name(folder_path_train, -8)
+            mass_name = get_dataset_name(folder_path_train, -2)
             dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='CNN')
             dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='CNN')
             dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='CNN')
@@ -30,6 +30,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
             transfer_learning = input("Enter 'r' for Resnet50 or 'i' for InceptionV3 or 'x' for Xception: ")
             if transfer_learning.lower() == 'r':
                 dataset_name = get_dataset_name(folder_path_train, -5)
+                mass_name = get_dataset_name(folder_path_train, -2)
                 dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='Resnet50')
                 dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='Resnet50')
                 dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Melspectrogram',learning_name='Resnet50')
@@ -37,6 +38,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
                 
             elif transfer_learning.lower() == 'i':
                 dataset_name = get_dataset_name(folder_path_train, -5)
+                mass_name = get_dataset_name(folder_path_train, -2)
                 dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='InceptionV3')
                 dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name,visualizing='Melspectrogram', learning_name='InceptionV3')
                 dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Melspectrogram',learning_name='InceptionV3')
@@ -44,6 +46,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
                 
             elif transfer_learning.lower() == 'x':
                  dataset_name = get_dataset_name(folder_path_train, -5)
+                 mass_name = get_dataset_name(folder_path_train, -2)
                  dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='Xception')
                  dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='Xception')
                  dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='Xception')
@@ -58,6 +61,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
         learning_selection = input("Enter 'c' for CNN or 't' for Transfer-Learning: ")
         if learning_selection.lower() == 'c':
             dataset_name = get_dataset_name(folder_path_train,-5)
+            mass_name = get_dataset_name(folder_path_train, -2)
             dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Leaf', learning_name='CNN')
             dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Leaf', learning_name='CNN')
             dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Leaf', learning_name='CNN')
@@ -67,6 +71,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
             transfer_learning = input("Enter 'r' for Resnet50 or 'i' for InceptionV3 or 'x' for Xception: ")
             if transfer_learning.lower() == 'r':
                 dataset_name = get_dataset_name(folder_path_train,-5)
+                mass_name = get_dataset_name(folder_path_train, -2)
                 dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Leaf', learning_name='Resnet50')
                 dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Leaf', learning_name='Resnet50')
                 dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Leaf', learning_name='Resnet50')
@@ -74,6 +79,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
                 
             elif transfer_learning.lower() == 'i':
                 dataset_name = get_dataset_name(folder_path_train,-5)
+                mass_name = get_dataset_name(folder_path_train, -2)
                 dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Leaf', learning_name='InceptionV3')
                 dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Leaf', learning_name='InceptionV3')
                 dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Leaf', learning_name='InceptionV3')
@@ -81,6 +87,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
                 
             elif transfer_learning.lower() == 'x':
                 dataset_name = get_dataset_name(folder_path_train,-5)
+                mass_name = get_dataset_name(folder_path_train, -2)
                 dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Leaf', learning_name='Xception')
                 dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Leaf', learning_name='Xception')
                 dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Leaf', learning_name='Xception')
