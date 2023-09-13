@@ -3,6 +3,8 @@ This code visualize the Melspectrograms.
 First run the main code to create the melspect_data.pkl file, 
 then read the pkl file for visualization.
 '''
+import sys
+sys.path.append('/content/VoicePathologyDetection')
 
 from src.make_dataset_folder import make_dataset_folder
 from src.get_dataset_name import get_dataset_name
@@ -20,23 +22,24 @@ import librosa.display
 def visualizing_melspect(folder_path, filename):
     
     dataset_name = get_dataset_name(folder_path, -5)
+    mass_name = get_dataset_name(folder_path_train, -2)
     learning_selection = input("Enter 'c' for CNN or 't' for Transfer-Learning: ")
         
     if learning_selection.lower() == 'c':
-        dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name, visualizing='Melspectrogram', learning_name='CNN')
-        dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name, visualizing='Melspectrogram', learning_name= None)
+        dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='CNN')
+        dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name= None)
         
     elif learning_selection.lower() == 't':
         transfer_learning = input("Enter 'r' for Resnet50 or 'i' for InceptionV3 or 'x' for Xception: ")
         if transfer_learning.lower() == 'r':
-            dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name, visualizing='Melspectrogram', learning_name='Resnet50')
-            dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name, visualizing='Melspectrogram', learning_name= None)
+            dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name, mass_name, visualizing='Melspectrogram', learning_name='Resnet50')
+            dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name, mass_name,visualizing='Melspectrogram', learning_name= None)
         if transfer_learning.lower() == 'i':
-            dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name, visualizing='Melspectrogram', learning_name='InceptionV3')
-            dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name, visualizing='Melspectrogram', learning_name= None)
+            dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='InceptionV3')
+            dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name= None)
         if transfer_learning.lower() == 'x':
-            dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name, visualizing='Melspectrogram', learning_name='Xception')
-            dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name, visualizing='Melspectrogram', learning_name= None)
+            dataset_folder_helper = make_dataset_folder (helper_output_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='Xception')
+            dataset_folder_plots = make_dataset_folder (plots_output_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name= None)
     else:
         print("WRONG KEY!!!")    
             
