@@ -20,14 +20,18 @@ from src.roc_curve_function import roc_curve_function
 from src.get_informative_chunk import get_informative_chunk
 from src.get_avg_amp import get_avg_amp
 from src.noise_profiling import noise_preparing, find_matching_noise, noise_removal
+from src.img_array_vit import img_array_vit
+from src.pad_image_vit import pad_image_vit
+from src.pad_crop_image_vit import pad_crop_image_vit
 
 from models.cnn import cnn_function
 from models.inceptionv3 import inceptionv3
 from models.resnet50 import resnet50
 from models.xception import xception
+from models.vit import vision_transformer
 
 from config.config import (folder_path_train, folder_path_test, K_fold, 
-                            Epoch, Batch_size, sample_rate, max_duration)
+                            Epoch, Batch_size, sample_rate, max_duration, num_classes)
 
 import os
 import pickle
@@ -42,6 +46,7 @@ sr = sample_rate
 max_duration = max_duration
 path_train = folder_path_train
 path_test = folder_path_test
+num_classes = num_classes
 
 #------------------------------------------------------------------------------
 '''
@@ -56,13 +61,13 @@ elif visualizing_selection.lower() == 'w':
 visualizing_selection = input("Enter 'm' to convert audios to Melspectrogram --or-- 'l' to convert them to Leaf:")
 if visualizing_selection.lower() == 'm':
     var_leaf = False
-    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception, var_vit = learning_selection_function(path_train, path_test, var_leaf)
     wave_train = pad_audio(path_train, sample_rate, max_duration = max_duration )
     wave_test = pad_audio(path_test, sample_rate, max_duration = max_duration)
 
 elif visualizing_selection.lower() == 'l':
     var_leaf = True
-    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception = learning_selection_function(path_train, path_test, var_leaf)
+    dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception, var_vit = learning_selection_function(path_train, path_test, var_leaf)
     wave_train = decode_wave(path_train)
     wave_test = decode_wave(path_test)  
 #------------------------------------------------------------------------------
@@ -167,10 +172,23 @@ if var_cnn:
     train_array = input_array(train_data, var_leaf)
     test_array = input_array(test_data, var_leaf)
     input_shape = train_array.shape[1:]    
-    num_classes = 2
-    model = cnn_function(input_shape, 2)
+    model = cnn_function(input_shape, num_classes)
     model.summary()
     name = 'cnn'
+elif var_vit:
+    target_shape = (224, 224, 3)  #need to have square size
+    train_array = input_array(train_data, var_leaf)
+    test_array = input_array(test_data, var_leaf)
+    train_array = np.repeat(train_array, 3, axis=-1)
+    test_array = np.repeat(test_array, 3, axis=-1) 
+    input_shape = train_array.shape[1:]
+    output_train = pad_crop_image_vit(train_array, target_shape)
+    output_test = pad_crop_image_vit(test_array, target_shape)
+    #ToDo:check output_test
+    
+    model = vision_transformer(input_shape[0], num_classes, patch_size = 8)
+    model.summary()
+    name = 'ViT'
 else:
     train_array = input_array(train_data, var_leaf)
     test_array = input_array(test_data, var_leaf)

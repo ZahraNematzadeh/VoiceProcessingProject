@@ -9,6 +9,7 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
     var_resnet = None
     var_inception = None
     var_xception = None
+    var_vit = None
     
     helper_path = helper_output_path
     final_path = final_output_path
@@ -17,16 +18,23 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
    
     if var_leaf == False:
        
-        learning_selection = input("Enter 'c' for CNN or 't' for Transfer-Learning: ")
+        learning_selection = input("Enter 'c' for CNN or 't' for Transfer-Learning or 'v' for Vision Transformer': ")
         if learning_selection.lower() == 'c':
-            
             dataset_name = get_dataset_name(folder_path_train, -5)
             mass_name = get_dataset_name(folder_path_train, -2)
             dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='CNN')
             dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='CNN')
             dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='CNN')
             var_cnn = True
-        else: 
+        elif learning_selection.lower() == 'v':
+            dataset_name = get_dataset_name(folder_path_train, -5)
+            mass_name = get_dataset_name(folder_path_train, -2)
+            dataset_folder_helper = make_dataset_folder (helper_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='ViT')
+            dataset_folder_final = make_dataset_folder (final_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='ViT')
+            dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Melspectrogram', learning_name='ViT')
+            var_vit = True
+            
+        else:
             transfer_learning = input("Enter 'r' for Resnet50 or 'i' for InceptionV3 or 'x' for Xception: ")
             if transfer_learning.lower() == 'r':
                 dataset_name = get_dataset_name(folder_path_train, -5)
@@ -93,4 +101,4 @@ def learning_selection_function(folder_path_train, folder_path_test, var_leaf):
                 dataset_folder_plots = make_dataset_folder (plots_path, dataset_name,mass_name, visualizing='Leaf', learning_name='Xception')
                 var_xception = True
         
-    return dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception 
+    return dataset_folder_helper, dataset_folder_final, dataset_folder_plots, dataset_name, var_cnn,var_resnet, var_inception, var_xception, var_vit
