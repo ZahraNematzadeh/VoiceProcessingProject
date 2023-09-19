@@ -32,7 +32,8 @@ from models.xception import xception
 from models.vit import vision_transformer
 
 from config.config import (folder_path_train, folder_path_test, K_fold, 
-                            Epoch, Batch_size, sample_rate, max_duration, num_classes)
+                            Epoch, Batch_size, sample_rate, max_duration,
+                            num_classes, target_shape)
 
 import os
 import pickle
@@ -48,6 +49,7 @@ max_duration = max_duration
 path_train = folder_path_train
 path_test = folder_path_test
 num_classes = num_classes
+target_shape_vit = target_shape
 
 #------------------------------------------------------------------------------
 '''
@@ -177,29 +179,19 @@ if var_cnn:
     model.summary()
     name = 'cnn'
 elif var_vit:
-    target_shape = (224,224,3)  #need to have square size
+    target_shape =  target_shape_vit #need to have square size
     train_array_1 = input_array(train_data, var_leaf)
     test_array_1 = input_array(test_data, var_leaf)
-    #----------------------------------------------
-    #train_array = np.repeat(train_array_1, 3, axis=-1)
-    #test_array = np.repeat(test_array_1, 3, axis=-1) 
-    #input_shape = train_array.shape[1:]
-    #output_train = pad_crop_image_vit(train_array, target_shape, input_shape, sr)
-    #output_test = pad_crop_image_vit(test_array, target_shape,input_shape, sr)
-    #----------------------------------------------
     train_rgb = mono_to_color(train_array_1)
     train_array = ViT_resize_image(train_rgb, target_shape[0], target_shape[1])
-    
     test_rgb = mono_to_color(test_array_1)
     test_array = ViT_resize_image(test_rgb, target_shape[0], target_shape[1])
   
     output_train_file = os.path.join(dataset_folder_helper, 'output_train.npy')
     np.save(output_train_file, train_array)
-    
     output_test_file = os.path.join(dataset_folder_helper, 'output_test.npy')
     np.save(output_test_file, test_array)
     
-    #------------------------------------------------
     input_shape = train_array.shape[1:]
     model = vision_transformer(input_shape[0], num_classes, patch_size = 32)
     model.summary()
