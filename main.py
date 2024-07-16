@@ -22,7 +22,7 @@ from src.get_avg_amp import get_avg_amp
 from src.noise_profiling import noise_preparing, find_matching_noise, noise_removal
 
 
-from src.mono_to_color import mono_to_color
+from src.vit_mono_to_color import mono_to_color
 from src.vit_resize_image import ViT_resize_image
 
 from models.cnn import cnn_function

@@ -9,9 +9,9 @@ max_duration = 5
 target_shape = (224,224,3) # only use for ViT
 
 #---------------------------------- GDrive -------------------------------------
-'''
-folder_path_train= '/content/drive/My Drive/Dataset/ConcatenatedAudio/e_ah_sissy/test_train/ClusteredData/big_mass/train'
-folder_path_test= '/content/drive/My Drive/Dataset/ConcatenatedAudio/e_ah_sissy/test_train/ClusteredData/big_mass/val'
+
+folder_path_train= '/content/drive/My Drive/Dataset/1_e/ClusteredData/test_train/medium_mass/train'
+folder_path_test= '/content/drive/My Drive/Dataset/1_e/ClusteredData/test_train/medium_mass/val'
 
 helper_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/HelpersOutputs'
 final_output_path = '/content/drive/My Drive/VoicePathologyDetection_Outputs/FinalOutputs'
@@ -25,9 +25,9 @@ if not os.path.exists(final_output_path):
 
 if not os.path.exists(plots_output_path):
     os.makedirs(plots_output_path)  
-'''
-#-------------------------------- my local path -------------------------------
 
+#-------------------------------- my local path -------------------------------
+'''
 folder_path_train= 'C:/Users/zahra/VoiceColab/dataset/1_e/1_e/test_train/ClusteredData/big_mass/train'
 folder_path_test= 'C:/Users/zahra/VoiceColab/dataset/1_e/1_e/test_train/ClusteredData/big_mass/val'
 
@@ -44,3 +44,4 @@ if not os.path.exists(final_output_path):
 
 if not os.path.exists(plots_output_path):
     os.makedirs(plots_output_path)        
+    '''
