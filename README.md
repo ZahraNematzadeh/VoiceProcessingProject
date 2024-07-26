@@ -32,46 +32,46 @@ You can change the default configuration in `config/config.py`. The default para
 
 ## Usage
 
-1. **Change the data directory**:
+1. **Change the data directory**:<br>
    - Update the data directory path in `config/config.py`.
 
-2. **Run the `main.py` script**:
-  Follow the prompts:
-  - Enter your desired alphabet:
-    **m** to convert audio files to **Mel Spectrograms**.
-    **l** to convert audio files to **Leaf** images. (**Note:** Currently, this option does not work in the code.)
+2. **Run the `main.py` script**:<br>
+  Follow the prompts:<br>
+  - Enter your desired alphabet:<br>
+    **m** to convert audio files to **Mel Spectrograms**.<br>
+    **l** to convert audio files to **Leaf** images. (**Note:** Currently, this option does not work in the code.)<br>
 
-  - Choose the machine learning model:
-    **c** to use Convolutional Neural Networks (CNN).
-    **t** to use Transfer Learning:
-      **r** for ResNet50
-      **i** for InceptionV3
-      **x** for Xception
-    **v** to use Vision Transformer.
+  - Choose the machine learning model:<br>
+    **c** to use Convolutional Neural Networks (CNN).<br>
+    **t** to use Transfer Learning:<br>
+      **r** for ResNet50<br>
+      **i** for InceptionV3<br>
+      **x** for Xception<br>
+    **v** to use Vision Transformer.<br>
   
-**View results:**
-  The final performance metrics will be displayed at the end of the run.
-  Plots and the best final model and weights will be saved in the **final_output_path**, which should be specified in the **config.py** file.
+**View results:** <br>
+  The final performance metrics will be displayed at the end of the run.<br>
+  Plots and the best final model and weights will be saved in the **final_output_path**, which should be specified in the **config.py** file.<br>
 
-**Requirements**
-  Python 3.8
-  Required libraries (see docs/requirements.txt)
+**Requirements** <br>
+  Python 3.8 <br>
+  Required libraries (see docs/requirements.txt) <br>
 
-**Installation**
-1. Clone the repository:
-     git clone https://github.com/ZahraNematzadeh/VoiceProcessingProject.git
-2. Navigate to the project directory:
-     cd VoiceProcessingProject
-3. Install the required dependencies:
-     pip install -r docs/requirements.txt
+**Installation** <br>
+1. Clone the repository: <br>
+     git clone https://github.com/ZahraNematzadeh/VoiceProcessingProject.git <br>
+2. Navigate to the project directory: <br>
+     cd VoiceProcessingProject <br>
+3. Install the required dependencies: <br>
+     pip install -r docs/requirements.txt <br>
 
-**Contributing**
-If you wish to contribute to this project, please follow the standard fork-and-pull request workflow. 
-Ensure that your contributions are well-documented and include appropriate tests.
+**Contributing** <br>
+If you wish to contribute to this project, please follow the standard fork-and-pull request workflow. <br>
+Ensure that your contributions are well-documented and include appropriate tests.<br>
 
-**License**
-This project is licensed under the MIT License - see the LICENSE file for details.
+**License** <br>
+This project is licensed under the MIT License - see the LICENSE file for details. <br>
 
-**Contact**
-Zahra Nematzadeh - zahra.nematzadeh87@gmail.com
+**Contact** <br>
+Zahra Nematzadeh - zahra.nematzadeh87@gmail.com<br>
 
