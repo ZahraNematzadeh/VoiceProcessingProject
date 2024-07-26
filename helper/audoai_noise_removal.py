@@ -4,7 +4,7 @@ from audoai.noise_removal import NoiseRemovalClient
 
 def audoai_noise_removal(audio_path, output_dir, set_name):
     
-    noise_removal = NoiseRemovalClient(api_key="fc980a1f752e615ff557f609bc6c8e0f")
+    noise_removal = NoiseRemovalClient(api_key="....")  #Add API_Key
     for root, dirs, files in os.walk(audio_path):
         for filename in files:
             if filename.endswith('.wav'):
