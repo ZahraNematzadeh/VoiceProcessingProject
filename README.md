@@ -38,32 +38,32 @@ You can change the default configuration in `config/config.py`. The default para
 2. **Run the `main.py` script**:<br>
   Follow the prompts:<br>
   - Enter your desired alphabet:<br>
-    **m** to convert audio files to **Mel Spectrograms**.<br>
-    **l** to convert audio files to **Leaf** images. (**Note:** Currently, this option does not work in the code.)<br>
+    - **m** to convert audio files to **Mel Spectrograms**.<br>
+    - **l** to convert audio files to **Leaf** images. (**Note:** Currently, this option does not work in the code.)<br>
 
   - Choose the machine learning model:<br>
-    **c** to use Convolutional Neural Networks (CNN).<br>
-    **t** to use Transfer Learning:<br>
-      **r** for ResNet50<br>
-      **i** for InceptionV3<br>
-      **x** for Xception<br>
-    **v** to use Vision Transformer.<br>
+    - **c** to use Convolutional Neural Networks (CNN).<br>
+    - **t** to use Transfer Learning:<br>
+    - **r** for ResNet50<br>
+    - **i** for InceptionV3<br>
+    - **x** for Xception<br>
+    - **v** to use Vision Transformer.<br>
   
 **View results:** <br>
   The final performance metrics will be displayed at the end of the run.<br>
   Plots and the best final model and weights will be saved in the **final_output_path**, which should be specified in the **config.py** file.<br>
 
 **Requirements** <br>
-  Python 3.8 <br>
-  Required libraries (see docs/requirements.txt) <br>
+  - Python 3.8 <br>
+  - Required libraries (see docs/requirements.txt) <br>
 
 **Installation** <br>
 1. Clone the repository: <br>
-     git clone https://github.com/ZahraNematzadeh/VoiceProcessingProject.git <br>
+     - git clone https://github.com/ZahraNematzadeh/VoiceProcessingProject.git <br>
 2. Navigate to the project directory: <br>
-     cd VoiceProcessingProject <br>
+     - cd VoiceProcessingProject <br>
 3. Install the required dependencies: <br>
-     pip install -r docs/requirements.txt <br>
+     - pip install -r docs/requirements.txt <br>
 
 **Contributing** <br>
 If you wish to contribute to this project, please follow the standard fork-and-pull request workflow. <br>
